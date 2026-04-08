@@ -113,7 +113,7 @@
   <section class="relative rounded-xl overflow-hidden shadow-xl" style="height: 220px;">
     <img
       src="./IMG_0118.jpg"
-      alt="Erik on the Gheeno, Big Pine Key"
+      alt="Erik on the Gheenoe, Big Pine Key"
       class="w-full h-full object-cover object-top"
       onerror="this.parentElement.style.display='none'"
     />
@@ -127,7 +127,7 @@
     </div>
     <!-- Live badge top right -->
     <div class="absolute top-3 right-3 glass-panel rounded-full px-3 py-1 border border-white/20">
-      <p class="font-label text-[10px] font-bold text-primary uppercase tracking-widest">The Gheeno</p>
+      <p class="font-label text-[10px] font-bold text-primary uppercase tracking-widest">The Gheenoe</p>
     </div>
   </section>
 
@@ -519,7 +519,7 @@ function calcFishingScore(windKnots, tideChanging, moonPhase, stormLevel) {
 }
 
 // ============================================================
-// SPOTS DATABASE — Big Pine Key area (Gheeno range)
+// SPOTS DATABASE — Big Pine Key area (Gheenoe range)
 // bestTide: "incoming" | "outgoing" | "either"
 // bestMonths: 1–12, peakMonths subset for +1 bonus
 // bestWindMax: max comfortable knots
@@ -531,6 +531,7 @@ const SPOTS = [
     name: "Coupon Bight",
     subtitle: "Big Pine Backcountry",
     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    lat: 24.6450, lon: -81.3760,
     distanceNote: "5 min from BPK ramp",
     species: "Permit & Tarpon",
     bestTide: "incoming",
@@ -549,6 +550,7 @@ const SPOTS = [
     name: "No Name Key Flats",
     subtitle: "Backcountry Permit Flat",
     image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+    lat: 24.6950, lon: -81.3180,
     distanceNote: "10 min via Bogie Channel",
     species: "Permit & Bonefish",
     bestTide: "incoming",
@@ -567,6 +569,7 @@ const SPOTS = [
     name: "Bogie Channel",
     subtitle: "Tarpon & Snook Highway",
     image: "https://images.unsplash.com/photo-1534186294672-8c0a7a4cc753?w=800&q=80",
+    lat: 24.6780, lon: -81.3340,
     distanceNote: "10 min from BPK",
     species: "Tarpon & Snook",
     bestTide: "either",
@@ -585,6 +588,7 @@ const SPOTS = [
     name: "Niles Channel",
     subtitle: "Tarpon Migration Route",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    lat: 24.6580, lon: -81.4230,
     distanceNote: "15 min toward Summerland",
     species: "Tarpon & Cobia",
     bestTide: "outgoing",
@@ -603,6 +607,7 @@ const SPOTS = [
     name: "Newfound Harbor",
     subtitle: "Snook & Permit Structure",
     image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+    lat: 24.6300, lon: -81.4200,
     distanceNote: "15 min toward Little Torch",
     species: "Snook & Permit",
     bestTide: "outgoing",
@@ -621,6 +626,7 @@ const SPOTS = [
     name: "Spanish Harbor Channel",
     subtitle: "Bridge Snook & Cobia",
     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    lat: 24.6620, lon: -81.3530,
     distanceNote: "10 min on US-1 side",
     species: "Snook & Cobia",
     bestTide: "outgoing",
@@ -639,6 +645,7 @@ const SPOTS = [
     name: "Torch Ramrod Channel",
     subtitle: "Deep Channel Big Fish",
     image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    lat: 24.6430, lon: -81.4640,
     distanceNote: "20 min toward Ramrod Key",
     species: "Tarpon & Cobia",
     bestTide: "either",
@@ -657,6 +664,7 @@ const SPOTS = [
     name: "Pine Channel",
     subtitle: "Big Pine North Side",
     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    lat: 24.7060, lon: -81.3680,
     distanceNote: "5 min north of BPK",
     species: "Snook & Redfish",
     bestTide: "outgoing",
@@ -675,6 +683,7 @@ const SPOTS = [
     name: "Looe Key Reef",
     subtitle: "Calm Days Only — 6 Miles Out",
     image: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80",
+    lat: 24.5480, lon: -81.4060,
     distanceNote: "6 miles offshore — calm days only",
     species: "Mutton Snapper & Grouper",
     bestTide: "either",
@@ -683,7 +692,7 @@ const SPOTS = [
     bestWindMax: 10,
     bestTime: "any",
     bait: { incoming: "Pilchard or squid", outgoing: "Pilchard or squid", either: "Live pilchard or cut squid" },
-    teachingTip: "Looe Key is a National Marine Sanctuary reef 6 miles south of Big Pine. On flat calm days the Gheeno can make the run. Mutton snapper, black grouper, and permit around the coral heads — this is where the biggest eatable fish live.",
+    teachingTip: "Looe Key is a National Marine Sanctuary reef 6 miles south of Big Pine. On flat calm days the Gheenoe can make the run. Mutton snapper, black grouper, and permit around the coral heads — this is where the biggest eatable fish live.",
     whyIncoming: "Fish are active on the reef on any tide. Present pilchards near the reef structure — let them swim naturally toward the coral heads.",
     whyOutgoing: "Outgoing tide brings cooler, cleaner water across the reef. Snapper and grouper feed more aggressively on moving water.",
     whyAny: "Looe Key rewards the run. Anchor upcurrent of the reef and let bait drift back over the structure. Biggest eating fish in the area if conditions allow the trip."
@@ -693,6 +702,7 @@ const SPOTS = [
     name: "Bahia Honda Bridge",
     subtitle: "Tarpon Alley — Adventure Run",
     image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    lat: 24.6580, lon: -81.2790,
     distanceNote: "25 min — plan for conditions",
     species: "Tarpon",
     bestTide: "incoming",
@@ -701,7 +711,7 @@ const SPOTS = [
     bestWindMax: 12,
     bestTime: "early",
     bait: { incoming: "Live crab", outgoing: "Live mullet", either: "Live crab" },
-    teachingTip: "Bahia Honda is one of the great tarpon spots in the Keys but it's a real run in the Gheeno — plan it for calm mornings. The old bridge creates an ambush point where massive tarpon stack on the tide. Worth the trip at least once.",
+    teachingTip: "Bahia Honda is one of the great tarpon spots in the Keys but it's a real run in the Gheenoe — plan it for calm mornings. The old bridge creates an ambush point where massive tarpon stack on the tide. Worth the trip at least once.",
     whyIncoming: "Incoming tide pushes bait against the Bahia Honda bridge pilings. Tarpon stack in the current seams waiting. Free-line a live crab and hold on.",
     whyOutgoing: "Outgoing tide concentrates fish at the channel mouth below the bridge. Live mullet on a slow drift through the channel cut.",
     whyAny: "Bahia Honda is worth the run during tarpon season. The old bridge structure holds fish all day — timing the tide just makes it more efficient."
@@ -792,6 +802,7 @@ function renderSpots(tideDirection, windKt) {
     const bait = getBait(spot, tideDirection);
     const whyText = getSpotWhyText(spot, tideDirection);
     const lbl = labels[i];
+    const mapUrl = `https://maps.google.com/maps?q=${spot.lat},${spot.lon}&t=k&z=14`;
     return `
       <div class="spot-card bg-surface-container-lowest shadow-md">
         <div class="relative h-44 overflow-hidden rounded-t-xl">
@@ -821,14 +832,21 @@ function renderSpots(tideDirection, windKt) {
               <p class="font-headline font-bold text-primary text-sm">${bait}</p>
             </div>
           </div>
-          <p class="text-sm text-on-surface-variant font-body leading-relaxed mb-2">${whyText}</p>
-          <details class="group">
-            <summary class="text-[11px] text-primary font-bold uppercase tracking-wider cursor-pointer list-none flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm group-open:rotate-90 transition-transform">chevron_right</span>
-              Pro Tip
-            </summary>
-            <p class="text-xs text-on-surface-variant font-body leading-relaxed mt-2 pl-4 border-l-2 border-secondary-fixed">${spot.teachingTip}</p>
-          </details>
+          <p class="text-sm text-on-surface-variant font-body leading-relaxed mb-3">${whyText}</p>
+          <div class="flex items-center gap-3">
+            <a href="${mapUrl}" target="_blank" rel="noopener"
+               class="flex items-center gap-1.5 bg-primary text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-base">map</span>
+              Open in Maps
+            </a>
+            <details class="group flex-1">
+              <summary class="text-[11px] text-primary font-bold uppercase tracking-wider cursor-pointer list-none flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm group-open:rotate-90 transition-transform">chevron_right</span>
+                Pro Tip
+              </summary>
+              <p class="text-xs text-on-surface-variant font-body leading-relaxed mt-2 pl-4 border-l-2 border-secondary-fixed">${spot.teachingTip}</p>
+            </details>
+          </div>
         </div>
       </div>`;
   }).join("");
@@ -840,7 +858,7 @@ function getGoStatus(score, stormLevel, windKnots) {
       cls: "nogo-banner",
       icon: "cancel",
       text: "STAY HOME, ERIK",
-      reason: "Not safe for the Gheeno today. Check again tomorrow."
+      reason: "Not safe for the Gheenoe today. Check again tomorrow."
     };
   }
   if (stormLevel === "MODERATE" || windKnots > 17 || score <= 4) {
@@ -848,7 +866,7 @@ function getGoStatus(score, stormLevel, windKnots) {
       cls: "caution-banner",
       icon: "warning",
       text: "ERIK, USE CAUTION",
-      reason: "Marginal for the Gheeno. Go early, watch the horizon, stay close."
+      reason: "Marginal for the Gheenoe. Go early, watch the horizon, stay close."
     };
   }
   if (score >= 8) {
@@ -978,9 +996,9 @@ async function init() {
       box.classList.remove("hidden");
       box.classList.add("flex");
       let msg = "";
-      if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT take the Gheeno out today.";
-      else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Keep the Gheeno within quick return distance of the ramp.`;
-      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for the Gheeno. Watch for afternoon build-up.`;
+      if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT take the Gheenoe out today.";
+      else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Keep the Gheenoe within quick return distance of the ramp.`;
+      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for the Gheenoe. Watch for afternoon build-up.`;
       document.getElementById("advisory-text").textContent = msg;
     }
 
