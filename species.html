@@ -62,6 +62,10 @@
       <p class="text-on-primary-container text-sm mt-2 leading-relaxed max-w-xs">
         What's running, where to find it, and what to throw. Covers your range from Big Torch to Bahia Honda.
       </p>
+      <div class="mt-4 bg-white/10 border border-white/20 rounded-lg px-3 py-2">
+        <p class="text-[9px] text-on-primary-container uppercase tracking-widest font-label mb-0.5">What's Biting Now</p>
+        <p id="biting-now-banner" class="text-white text-sm font-body font-medium">Loading...</p>
+      </div>
       <a href="https://myfwc.com/fishing/saltwater/recreational/" target="_blank" rel="noopener"
          class="inline-flex items-center gap-2 mt-4 bg-white/15 hover:bg-white/25 border border-white/30 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-2 rounded-lg transition-colors active:scale-95">
         <span class="material-symbols-outlined text-base">gavel</span>
@@ -86,7 +90,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-on-tertiary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">92% Active</span>
+            <span class="bg-on-tertiary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="tarpon-badge">92% Active</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Tarpon</h3>
@@ -95,7 +99,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-on-tertiary-container" style="width:92%"></div>
+            <div id="tarpon-bar" class="h-full rounded-full bg-on-tertiary-container" style="width:92%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -106,7 +110,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
               <p class="font-headline font-bold text-primary text-sm">Apr — Jul</p>
-              <p class="text-xs text-on-surface-variant">Migration runs now</p>
+              <p id="tarpon-season" class="text-xs text-on-surface-variant">Migration runs now</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -114,7 +118,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 Bahia Honda Bridge — Tarpon Alley</p>
               <p class="text-sm text-primary font-medium">📍 No Name Key Bridge — Night bite</p>
-              <p class="text-xs text-on-surface-variant mt-1">Focus on bridge pylons during incoming tide. First 2 hours of light are peak.</p>
+              <p id="tarpon-tip" class="text-xs text-on-surface-variant mt-1">Focus on bridge pylons during incoming tide. First 2 hours of light are peak.</p>
             </div>
           </div>
         </div>
@@ -129,7 +133,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-on-primary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">78% Active</span>
+            <span class="bg-on-primary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="bone-badge">78% Active</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Bonefish</h3>
@@ -138,7 +142,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-on-primary-container" style="width:78%"></div>
+            <div id="bone-bar" class="h-full rounded-full bg-on-primary-container" style="width:78%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -149,7 +153,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
               <p class="font-headline font-bold text-primary text-sm">Year Round</p>
-              <p class="text-xs text-on-surface-variant">Best Sept — Nov</p>
+              <p id="bone-season" class="text-xs text-on-surface-variant">Best Sept — Nov</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -157,7 +161,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 Content Keys — Eastern edge flats</p>
               <p class="text-sm text-primary font-medium">📍 Big Pine backcountry — Marl flats</p>
-              <p class="text-xs text-on-surface-variant mt-1">Tailing fish on incoming tide as water floods the marl. Look for wakes and nervous water.</p>
+              <p id="bone-tip" class="text-xs text-on-surface-variant mt-1">Tailing fish on incoming tide as water floods the marl. Look for wakes and nervous water.</p>
             </div>
           </div>
         </div>
@@ -172,7 +176,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-outline text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Year Round</span>
+            <span class="bg-outline text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="snap-badge">Year Round</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Mangrove Snapper</h3>
@@ -181,7 +185,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-outline" style="width:85%"></div>
+            <div id="snap-bar" class="h-full rounded-full bg-outline" style="width:85%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -192,7 +196,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Time</p>
               <p class="font-headline font-bold text-primary text-sm">Night bite</p>
-              <p class="text-xs text-on-surface-variant">Or outgoing tide at dusk</p>
+              <p id="snap-season" class="text-xs text-on-surface-variant">Or outgoing tide at dusk</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -200,7 +204,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 No Name Key Bridge — Night snapper</p>
               <p class="text-sm text-primary font-medium">📍 Mangrove edges — Any channel</p>
-              <p class="text-xs text-on-surface-variant mt-1">Structure fish. Work bridge pilings and mangrove edges on outgoing tide.</p>
+              <p id="snap-tip" class="text-xs text-on-surface-variant mt-1">Structure fish. Work bridge pilings and mangrove edges on outgoing tide.</p>
             </div>
           </div>
         </div>
@@ -215,7 +219,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1518877593221-1f28583780b4?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-secondary text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Challenging</span>
+            <span class="bg-secondary text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="permit-badge">Challenging</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Permit</h3>
@@ -224,7 +228,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-secondary-fixed-dim" style="width:45%"></div>
+            <div id="permit-bar" class="h-full rounded-full bg-secondary-fixed-dim" style="width:45%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -235,7 +239,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
               <p class="font-headline font-bold text-primary text-sm">Mar — Jun</p>
-              <p class="text-xs text-on-surface-variant">Spring migration</p>
+              <p id="permit-season" class="text-xs text-on-surface-variant">Spring migration</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -243,7 +247,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 Big Torch West Channel</p>
               <p class="text-sm text-primary font-medium">📍 Bahia Honda reef edges</p>
-              <p class="text-xs text-on-surface-variant mt-1">Notoriously difficult. Sight fish on the flats or work reef edges. Slow and stealthy approach essential.</p>
+              <p id="permit-tip" class="text-xs text-on-surface-variant mt-1">Notoriously difficult. Sight fish on the flats or work reef edges. Slow and stealthy approach essential.</p>
             </div>
           </div>
         </div>
@@ -258,7 +262,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1601158935942-52255782d322?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Year Round</span>
+            <span class="bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="snook-badge">Year Round</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Snook</h3>
@@ -267,7 +271,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-emerald-600" style="width:88%"></div>
+            <div id="snook-bar" class="h-full rounded-full bg-emerald-600" style="width:88%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -278,7 +282,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
               <p class="font-headline font-bold text-primary text-sm">Year Round</p>
-              <p class="text-xs text-on-surface-variant">Best fall & winter</p>
+              <p id="snook-season" class="text-xs text-on-surface-variant">Best fall & winter</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -286,7 +290,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 Spanish Harbor Bridge — shadow lines</p>
               <p class="text-sm text-primary font-medium">📍 Newfound Harbor — mangrove edges</p>
-              <p class="text-xs text-on-surface-variant mt-1">Work outgoing tide at bridge shadow lines. Present bait just upcurrent and let it swing into the structure.</p>
+              <p id="snook-tip" class="text-xs text-on-surface-variant mt-1">Work outgoing tide at bridge shadow lines. Present bait just upcurrent and let it swing into the structure.</p>
             </div>
           </div>
           <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
@@ -304,7 +308,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-on-tertiary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Spring Run</span>
+            <span class="bg-on-tertiary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="cobia-badge">Spring Run</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Cobia</h3>
@@ -313,7 +317,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-on-tertiary-container" style="width:70%"></div>
+            <div id="cobia-bar" class="h-full rounded-full bg-on-tertiary-container" style="width:70%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -324,7 +328,7 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
               <p class="font-headline font-bold text-primary text-sm">Mar — Jun</p>
-              <p class="text-xs text-on-surface-variant">Following rays in channels</p>
+              <p id="cobia-season" class="text-xs text-on-surface-variant">Following rays in channels</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
@@ -332,7 +336,7 @@
             <div class="space-y-1">
               <p class="text-sm text-primary font-medium">📍 Niles Channel — following eagle rays</p>
               <p class="text-sm text-primary font-medium">📍 Torch Ramrod — open channel</p>
-              <p class="text-xs text-on-surface-variant mt-1">Look for large eagle rays. Cobia shadow rays almost every time April through June. Keep a pitch bait ready — you may only get one shot.</p>
+              <p id="cobia-tip" class="text-xs text-on-surface-variant mt-1">Look for large eagle rays. Cobia shadow rays almost every time April through June. Keep a pitch bait ready — you may only get one shot.</p>
             </div>
           </div>
         </div>
@@ -347,7 +351,7 @@
                onerror="this.src='https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
           <div class="absolute top-3 right-3">
-            <span class="bg-outline text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Best Eating</span>
+            <span class="bg-outline text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest" id="mutton-badge">Best Eating</span>
           </div>
           <div class="absolute bottom-3 left-4">
             <h3 class="font-headline text-2xl font-bold text-white">Mutton Snapper</h3>
@@ -356,7 +360,7 @@
         </div>
         <div class="p-4 space-y-3">
           <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
-            <div class="h-full rounded-full bg-outline" style="width:80%"></div>
+            <div id="mutton-bar" class="h-full rounded-full bg-outline" style="width:80%"></div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="bg-surface-container-low rounded-lg p-3">
@@ -367,12 +371,12 @@
             <div class="bg-surface-container-low rounded-lg p-3">
               <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Where</p>
               <p class="font-headline font-bold text-primary text-sm">Looe Key Reef</p>
-              <p class="text-xs text-on-surface-variant">Calm days only trip</p>
+              <p id="mutton-season" class="text-xs text-on-surface-variant">Calm days only trip</p>
             </div>
           </div>
           <div class="bg-surface-container-low rounded-lg p-3">
             <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Why This Fish</p>
-            <p class="text-sm text-on-surface-variant">Best eating fish in the Lower Keys. Up to 30 lbs on the reef at Looe Key. Worth the offshore run on a flat calm day — this is the fish that makes a dinner party.</p>
+            <p id="mutton-tip" class="text-sm text-on-surface-variant">Best eating fish in the Lower Keys. Up to 30 lbs on the reef at Looe Key. Worth the offshore run on a flat calm day — this is the fish that makes a dinner party.</p>
           </div>
         </div>
       </div>
@@ -446,5 +450,161 @@
     <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
   </a>
 </nav>
+
+<script>
+// ============================================================
+// SEASONAL SPECIES DATA — activity by month (0=Jan, 11=Dec)
+// ============================================================
+const SPECIES_DATA = {
+  tarpon: {
+    activity:  [20, 25, 40, 90, 95, 90, 75, 55, 40, 25, 20, 20],
+    badgeId: "tarpon-badge", barId: "tarpon-bar",
+    seasonId: "tarpon-season", tipId: "tarpon-tip",
+    tips: {
+      peak:   "Migration is ON. Fish stack in Niles and Bogie channels April–June. Dead-drift a live crab on the outgoing tide and hold on.",
+      good:   "Tarpon still moving through the backcountry. Live mullet free-lined through Bogie Channel at first light. Look for rollers before you anchor.",
+      fair:   "Late-season resident fish holding near bridge structure. Spanish Harbor and No Name Key bridges on outgoing tide at dusk.",
+      slow:   "Tarpon are largely gone for the season. A few resident fish near bridges — not worth planning a trip around. Wait for the migration."
+    },
+    seasons: { peak: "Migration Running", good: "Post-Migration", fair: "Resident Fish", slow: "Off Season" }
+  },
+  bone: {
+    activity:  [50, 55, 60, 65, 70, 65, 60, 65, 80, 85, 80, 55],
+    badgeId: "bone-badge", barId: "bone-bar",
+    seasonId: "bone-season", tipId: "bone-tip",
+    tips: {
+      peak:   "Prime bonefish season. Coupon Bight and No Name Key flats on incoming tide — tailing fish in 6–12 inches of water. Polarized glasses are essential.",
+      good:   "Bonefish active on the flats. Work the incoming tide edges of Coupon Bight. Look for nervous water and mud puffs before you cast.",
+      fair:   "Fish present but less aggressive. Early morning incoming tide on the hard-bottom flats. Smaller shrimp presentation on lighter leader.",
+      slow:   "Cooler water slows bonefish activity. They're still here but deeper. Target the channel edges adjacent to the flats rather than the skinny water."
+    },
+    seasons: { peak: "Peaking", good: "Active", fair: "Moderate", slow: "Slower" }
+  },
+  snap: {
+    activity:  [65, 65, 70, 75, 80, 92, 95, 90, 80, 75, 70, 65],
+    badgeId: "snap-badge", barId: "snap-bar",
+    seasonId: "snap-season", tipId: "snap-tip",
+    tips: {
+      peak:   "Mangrove snapper spawn aggregations June–August — biggest fish of the year. Bridge pilings at night with cut pinfish or shrimp. This is the best time to fill the cooler.",
+      good:   "Snapper feeding well. No Name Key Bridge and mangrove edges on outgoing tide at dusk. Use light leader — they're smart.",
+      fair:   "Solid year-round bite. Outgoing tide at any bridge or channel edge. Night bite consistently better than day.",
+      slow:   "Winter slows the bite but doesn't stop it. Midday sun warms the shallows — target those warmer pockets near structure."
+    },
+    seasons: { peak: "Spawn Season", good: "Active", fair: "Year Round", slow: "Slower" }
+  },
+  permit: {
+    activity:  [20, 25, 55, 75, 80, 70, 55, 45, 45, 35, 25, 20],
+    badgeId: "permit-badge", barId: "permit-bar",
+    seasonId: "permit-season", tipId: "permit-tip",
+    tips: {
+      peak:   "Spring migration is the best permit window. Coupon Bight and No Name Key flats on incoming tide. Live crab presented quietly 6 feet in front of a tailing fish — one shot, make it count.",
+      good:   "Permit on the flats but less concentrated. Pole slowly, spot the fish first. They're spooky — keep the sun at your back and stay low.",
+      fair:   "Scattered fish. Worth looking on calm incoming tides at Coupon Bight. Schooling fish offshore around Looe Key reef edges.",
+      slow:   "Permit mostly offshore or absent. Not worth targeting specifically — if you see one on the flat, great, but don't plan a trip around it."
+    },
+    seasons: { peak: "Spring Migration", good: "Active", fair: "Scattered", slow: "Off Season" }
+  },
+  snook: {
+    activity:  [80, 75, 70, 65, 55, 50, 50, 60, 75, 88, 90, 85],
+    badgeId: "snook-badge", barId: "snook-bar",
+    seasonId: "snook-season", tipId: "snook-tip",
+    tips: {
+      peak:   "Best snook season — fall and winter. Cold fronts push fish into the channels. Spanish Harbor Bridge on outgoing tide with live pinfish. This is when you catch a trophy.",
+      good:   "Snook feeding well. Work bridge shadow lines and mangrove points on outgoing tide. Live pinfish or mullet outperform shrimp this time of year.",
+      fair:   "Snook in spawn mode May–August — catch-and-release recommended. Target structure at dawn with live shrimp. Don't keep them during the spawn.",
+      slow:   "Resident fish near structure. Bridge pilings and mangrove edges on any moving tide. Consistent year-round — just slower right now."
+    },
+    seasons: { peak: "Peak Season", good: "Active", fair: "Spawning — C&R", slow: "Resident" }
+  },
+  cobia: {
+    activity:  [15, 20, 60, 85, 92, 75, 30, 20, 20, 20, 15, 15],
+    badgeId: "cobia-badge", barId: "cobia-bar",
+    seasonId: "cobia-season", tipId: "cobia-tip",
+    tips: {
+      peak:   "Cobia migration is running. Eyes up — look for large eagle rays in the channels. A cobia is following almost every big ray March through June. Have a pitch bait ready: live eel, large crab, or big pinfish. One cast.",
+      good:   "Cobia still moving through. Run Niles and Torch Ramrod channels and watch for rays. They're here — just less concentrated than peak.",
+      fair:   "Occasional cobia near structure or following rays. Not reliable enough to plan for specifically, but keep a pitch rod rigged when running channels.",
+      slow:   "Cobia have migrated out. Not worth targeting. Revisit in March."
+    },
+    seasons: { peak: "Migration On", good: "Active", fair: "Occasional", slow: "Gone" }
+  },
+  mutton: {
+    activity:  [45, 45, 55, 65, 80, 88, 90, 80, 70, 60, 50, 45],
+    badgeId: "mutton-badge", barId: "mutton-bar",
+    seasonId: "mutton-season", tipId: "mutton-tip",
+    tips: {
+      peak:   "Prime mutton snapper season. Worth the run to Looe Key on a calm day — fish stack on the coral heads. Anchor upcurrent and drift live pilchards back over the reef. Best eating fish in the Keys.",
+      good:   "Good mutton bite at Looe Key on flat days. Bring squid and pilchards. Early morning before wind builds is your best window for the offshore run.",
+      fair:   "Mutton snapper present on the reef. Check the forecast the night before — only run Looe Key if wind is under 10 kt by dawn.",
+      slow:   "Cooler water moves mutton snapper deeper. Reef fishing slower — focus on inshore species and wait for spring."
+    },
+    seasons: { peak: "Peaking", good: "Active", fair: "Fair", slow: "Slower" }
+  }
+};
+
+function getBadgeStyle(pct) {
+  if (pct >= 80) return { bg: "bg-on-tertiary-container", label: "PEAKING" };
+  if (pct >= 60) return { bg: "bg-emerald-600", label: "IN SEASON" };
+  if (pct >= 40) return { bg: "bg-on-primary-container", label: "ACTIVE" };
+  return { bg: "bg-outline", label: "SLOW" };
+}
+
+function getTier(pct) {
+  if (pct >= 80) return "peak";
+  if (pct >= 60) return "good";
+  if (pct >= 40) return "fair";
+  return "slow";
+}
+
+function updateSeasonalSpecies() {
+  const month = new Date().getMonth(); // 0-11
+
+  // Add a "what's biting now" banner at the top
+  const hot = Object.entries(SPECIES_DATA)
+    .map(([k, v]) => ({ key: k, pct: v.activity[month] }))
+    .filter(s => s.pct >= 75)
+    .sort((a, b) => b.pct - a.pct)
+    .map(s => {
+      const names = { tarpon:"Tarpon", bone:"Bonefish", snap:"Mangrove Snapper",
+                      permit:"Permit", snook:"Snook", cobia:"Cobia", mutton:"Mutton Snapper" };
+      return names[s.key];
+    });
+
+  const monthName = new Date().toLocaleDateString("en-US", { month: "long" });
+  const banner = document.getElementById("biting-now-banner");
+  if (banner) {
+    if (hot.length > 0) {
+      banner.textContent = `${monthName}: ${hot.join(", ")} — biting now`;
+    } else {
+      banner.textContent = `${monthName}: slower month — work the structure`;
+    }
+  }
+
+  // Update each species card
+  Object.values(SPECIES_DATA).forEach(sp => {
+    const pct = sp.activity[month];
+    const tier = getTier(pct);
+    const style = getBadgeStyle(pct);
+
+    const badge = document.getElementById(sp.badgeId);
+    const bar = document.getElementById(sp.barId);
+    const seasonEl = document.getElementById(sp.seasonId);
+    const tipEl = document.getElementById(sp.tipId);
+
+    if (badge) {
+      badge.className = badge.className.replace(/bg-\S+/, style.bg);
+      badge.textContent = `${pct}% · ${style.label}`;
+    }
+    if (bar) {
+      bar.className = bar.className.replace(/bg-\S+/, style.bg);
+      bar.style.width = pct + "%";
+    }
+    if (seasonEl) seasonEl.textContent = sp.seasons[tier];
+    if (tipEl) tipEl.textContent = sp.tips[tier];
+  });
+}
+
+document.addEventListener("DOMContentLoaded", updateSeasonalSpecies);
+</script>
 </body>
 </html>
