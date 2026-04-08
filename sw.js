@@ -1,7 +1,7 @@
 // Service Worker for Big Pine Key Fishing App
-// Caches app shell for offline use; API calls always go to network
+// Network-first for HTML pages (always fresh), cache fallback for offline use
 
-const CACHE_NAME = 'bpk-fishing-v1';
+const CACHE_NAME = 'bpk-fishing-v3';
 const APP_SHELL = [
   '/index.html',
   '/radar.html',
@@ -18,7 +18,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// Activate: remove old caches
+// Activate: remove ALL old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -28,11 +28,14 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: network-first for API calls, cache-first for app shell
+// Fetch strategy:
+//   - API calls → always network (live data)
+//   - HTML pages → network-first, cache fallback (always shows latest code)
+//   - Everything else → cache-first, network fallback (images, fonts, icons)
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // Always fetch live data from APIs
+  // Always live: API data
   if (
     url.hostname.includes('api.open-meteo.com') ||
     url.hostname.includes('api.tidesandcurrents.noaa.gov') ||
@@ -46,7 +49,24 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first for app shell
+  // Network-first for HTML pages — ensures updates are always visible
+  const isHTML = url.pathname.endsWith('.html') ||
+                 url.pathname === '/' ||
+                 APP_SHELL.includes(url.pathname);
+  if (isHTML) {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (response && response.status === 200) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // Cache-first for everything else (icons, images, static assets)
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request).then(response => {
