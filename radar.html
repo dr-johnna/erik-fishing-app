@@ -144,19 +144,19 @@
 
 <!-- BOTTOM NAV -->
 <nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
-  <a href="index.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+  <a href="/" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
     <span class="material-symbols-outlined">home</span>
     <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Home</span>
   </a>
-  <a href="radar.html" class="flex flex-col items-center text-[#fe6e60] active:scale-90 duration-200">
+  <a href="/radar" class="flex flex-col items-center text-[#fe6e60] active:scale-90 duration-200">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">radar</span>
     <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Radar</span>
   </a>
-  <a href="tides.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+  <a href="/tides" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
     <span class="material-symbols-outlined">water_full</span>
     <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Tides</span>
   </a>
-  <a href="species.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+  <a href="/species" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
     <span class="material-symbols-outlined">set_meal</span>
     <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
   </a>
@@ -175,7 +175,7 @@ async function init() {
   try {
     const [wxRes, marineRes] = await Promise.all([
       fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=windspeed_10m,winddirection_10m,precipitation_probability,weathercode,surface_pressure&current_weather=true&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=2`),
-      fetch(`https://api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&hourly=sea_surface_temperature&timezone=America%2FNew_York&forecast_days=1`)
+      fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?station=8724580&product=water_temperature&date=latest&units=english&time_zone=lst_ldt&application=web_services&format=json`)
     ]);
     const wx = await wxRes.json();
     const marine = await marineRes.json();
@@ -197,15 +197,12 @@ async function init() {
       document.getElementById("pressure-trend").innerHTML = `<span class="${tColor} font-bold">${trend}</span> over 3 hours`;
     }
 
-    // Sea surface temp
-    if (marine.hourly && marine.hourly.sea_surface_temperature) {
-      const sst = marine.hourly.sea_surface_temperature[0];
-      if (sst !== null) {
-        const sstF = celsiusToF(sst);
-        document.getElementById("sst").textContent = `${sstF}°F`;
-        document.getElementById("sst-note").textContent =
-          parseInt(sstF) >= 74 && parseInt(sstF) <= 86 ? "Prime range for Keys species" : "Monitor for fish movement";
-      }
+    // Sea surface temp from NOAA station 8724580
+    if (marine.data && marine.data.length > 0) {
+      const sstF = parseFloat(marine.data[0].v).toFixed(1);
+      document.getElementById("sst").textContent = `${sstF}°F`;
+      document.getElementById("sst-note").textContent =
+        parseFloat(sstF) >= 74 && parseFloat(sstF) <= 86 ? "Prime range for Keys species" : "Monitor for fish movement";
     }
 
     // 24-hour wind scroll
