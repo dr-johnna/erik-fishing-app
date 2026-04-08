@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Species, Bait & Locations — Big Pine Key</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#001e40"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-container": "#003366", "outline-variant": "#c3c6d1", "surface-variant": "#e0e3e5",
+          "primary": "#001e40", "secondary-fixed": "#f3e2ac", "primary-fixed-dim": "#a7c8ff",
+          "secondary": "#6a5e33", "surface-container-high": "#e5e9eb", "surface-bright": "#f7fafc",
+          "surface-container-low": "#f1f4f6", "primary-fixed": "#d5e3ff", "background": "#f7fafc",
+          "on-secondary-fixed": "#231b00", "on-secondary": "#ffffff", "on-surface": "#181c1e",
+          "outline": "#737780", "surface": "#f7fafc", "surface-tint": "#3a5f94",
+          "surface-container": "#ebeef0", "tertiary": "#460002", "on-primary": "#ffffff",
+          "on-tertiary-container": "#fe6e60", "surface-dim": "#d7dadc", "on-surface-variant": "#43474f",
+          "inverse-primary": "#a7c8ff", "on-primary-container": "#799dd6",
+          "tertiary-container": "#6e0105", "surface-container-highest": "#e0e3e5",
+          "on-secondary-container": "#706439", "secondary-fixed-dim": "#d6c692",
+          "surface-container-lowest": "#ffffff"
+        },
+        borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+        fontFamily: { "headline": ["Space Grotesk"], "body": ["Public Sans"], "label": ["Public Sans"] }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Public Sans', sans-serif; min-height: max(884px, 100dvh); }
+  .species-img { transition: transform 0.6s ease; }
+  .species-card:hover .species-img { transform: scale(1.05); }
+</style>
+</head>
+<body class="bg-background text-on-surface pb-28">
+
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-50 bg-[#001e40] flex justify-between items-center w-full px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-white">anchor</span>
+    <h1 class="font-headline text-white text-base font-bold tracking-tight">Species, Bait & Locations</h1>
+  </div>
+  <span class="font-label text-[10px] bg-white/10 text-white px-2.5 py-1 rounded-full uppercase tracking-widest">Big Pine Key</span>
+</header>
+
+<main class="max-w-lg mx-auto px-4 pt-5 space-y-6">
+
+  <!-- HERO -->
+  <section class="rounded-xl p-6 text-white relative overflow-hidden shadow-xl" style="background: linear-gradient(135deg, #001e40 0%, #003366 100%);">
+    <div class="relative z-10">
+      <span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-primary-container mb-2 block">Lower Keys Waters</span>
+      <h2 class="font-headline text-3xl font-bold tracking-tight">Species Guide</h2>
+      <p class="text-on-primary-container text-sm mt-2 leading-relaxed max-w-xs">
+        What's running, where to find it, and what to throw. Covers your range from Big Torch to Bahia Honda.
+      </p>
+    </div>
+    <div class="absolute -right-6 -top-6 w-36 h-36 bg-tertiary-container rounded-full blur-3xl opacity-30"></div>
+  </section>
+
+  <!-- SPECIES CARDS -->
+  <section>
+    <h3 class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-4">Target Species</h3>
+    <div class="space-y-5">
+
+      <!-- TARPON -->
+      <div class="species-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-md">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Megaloops_atlanticus.jpg/1280px-Megaloops_atlanticus.jpg"
+               alt="Tarpon — Megalops atlanticus"
+               class="species-img w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-on-tertiary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">92% Active</span>
+          </div>
+          <div class="absolute bottom-3 left-4">
+            <h3 class="font-headline text-2xl font-bold text-white">Tarpon</h3>
+            <p class="font-label text-[10px] text-on-primary-container uppercase tracking-wider">Megalops atlanticus · Silver King</p>
+          </div>
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-on-tertiary-container" style="width:92%"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Live Crab</p>
+              <p class="text-xs text-on-surface-variant">Large blue crabs or live mullet</p>
+            </div>
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
+              <p class="font-headline font-bold text-primary text-sm">Apr — Jul</p>
+              <p class="text-xs text-on-surface-variant">Migration runs now</p>
+            </div>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3">
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Where to Find Them</p>
+            <div class="space-y-1">
+              <p class="text-sm text-primary font-medium">📍 Bahia Honda Bridge — Tarpon Alley</p>
+              <p class="text-sm text-primary font-medium">📍 No Name Key Bridge — Night bite</p>
+              <p class="text-xs text-on-surface-variant mt-1">Focus on bridge pylons during incoming tide. First 2 hours of light are peak.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BONEFISH -->
+      <div class="species-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-md">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Bonefish_Albula_vulpes.jpg/1280px-Bonefish_Albula_vulpes.jpg"
+               alt="Bonefish — Albula vulpes"
+               class="species-img w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-on-primary-container text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">78% Active</span>
+          </div>
+          <div class="absolute bottom-3 left-4">
+            <h3 class="font-headline text-2xl font-bold text-white">Bonefish</h3>
+            <p class="font-label text-[10px] text-on-primary-container uppercase tracking-wider">Albula vulpes · Grey Ghost</p>
+          </div>
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-on-primary-container" style="width:78%"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Live Shrimp</p>
+              <p class="text-xs text-on-surface-variant">Or pink fly patterns</p>
+            </div>
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
+              <p class="font-headline font-bold text-primary text-sm">Year Round</p>
+              <p class="text-xs text-on-surface-variant">Best Sept — Nov</p>
+            </div>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3">
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Where to Find Them</p>
+            <div class="space-y-1">
+              <p class="text-sm text-primary font-medium">📍 Content Keys — Eastern edge flats</p>
+              <p class="text-sm text-primary font-medium">📍 Big Pine backcountry — Marl flats</p>
+              <p class="text-xs text-on-surface-variant mt-1">Tailing fish on incoming tide as water floods the marl. Look for wakes and nervous water.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SNAPPER -->
+      <div class="species-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-md">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Lutjanus_griseus_1.jpg/1280px-Lutjanus_griseus_1.jpg"
+               alt="Mangrove Snapper — Lutjanus griseus"
+               class="species-img w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-outline text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Year Round</span>
+          </div>
+          <div class="absolute bottom-3 left-4">
+            <h3 class="font-headline text-2xl font-bold text-white">Mangrove Snapper</h3>
+            <p class="font-label text-[10px] text-on-primary-container uppercase tracking-wider">Lutjanus griseus · Mango</p>
+          </div>
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-outline" style="width:85%"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Cut Bait</p>
+              <p class="text-xs text-on-surface-variant">Pinfish, squid, or shrimp</p>
+            </div>
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Time</p>
+              <p class="font-headline font-bold text-primary text-sm">Night bite</p>
+              <p class="text-xs text-on-surface-variant">Or outgoing tide at dusk</p>
+            </div>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3">
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Where to Find Them</p>
+            <div class="space-y-1">
+              <p class="text-sm text-primary font-medium">📍 No Name Key Bridge — Night snapper</p>
+              <p class="text-sm text-primary font-medium">📍 Mangrove edges — Any channel</p>
+              <p class="text-xs text-on-surface-variant mt-1">Structure fish. Work bridge pilings and mangrove edges on outgoing tide.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERMIT -->
+      <div class="species-card bg-surface-container-lowest rounded-xl overflow-hidden shadow-md">
+        <div class="relative h-48 overflow-hidden">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Trachinotus_falcatus_1.jpg/1280px-Trachinotus_falcatus_1.jpg"
+               alt="Permit — Trachinotus falcatus"
+               class="species-img w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1518877593221-1f28583780b4?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-secondary text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-label uppercase tracking-widest">Challenging</span>
+          </div>
+          <div class="absolute bottom-3 left-4">
+            <h3 class="font-headline text-2xl font-bold text-white">Permit</h3>
+            <p class="font-label text-[10px] text-on-primary-container uppercase tracking-wider">Trachinotus falcatus · Flat Hunter</p>
+          </div>
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-secondary-fixed-dim" style="width:45%"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Live Crab</p>
+              <p class="text-xs text-on-surface-variant">Or Merkin crab fly</p>
+            </div>
+            <div class="bg-surface-container-low rounded-lg p-3">
+              <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Peak Season</p>
+              <p class="font-headline font-bold text-primary text-sm">Mar — Jun</p>
+              <p class="text-xs text-on-surface-variant">Spring migration</p>
+            </div>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-3">
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">Where to Find Them</p>
+            <div class="space-y-1">
+              <p class="text-sm text-primary font-medium">📍 Big Torch West Channel</p>
+              <p class="text-sm text-primary font-medium">📍 Bahia Honda reef edges</p>
+              <p class="text-xs text-on-surface-variant mt-1">Notoriously difficult. Sight fish on the flats or work reef edges. Slow and stealthy approach essential.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LOCATION HOTSPOTS -->
+  <section class="pb-4">
+    <h3 class="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-secondary mb-4">Your Fishing Range</h3>
+    <div class="space-y-2">
+      <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings:'FILL' 1;">star</span>
+          <div>
+            <p class="font-headline font-bold text-primary">Bahia Honda Bridge</p>
+            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">Tarpon · East from ramp</p>
+          </div>
+        </div>
+        <span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed font-bold px-2 py-1 rounded font-label">#1</span>
+      </div>
+      <div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings:'FILL' 1;">star</span>
+          <div>
+            <p class="font-headline font-bold text-primary">Content Keys Flats</p>
+            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">Bonefish · Northwest from ramp</p>
+          </div>
+        </div>
+        <span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed font-bold px-2 py-1 rounded font-label">#2</span>
+      </div>
+      <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-outline">place</span>
+          <div>
+            <p class="font-headline font-bold text-primary">No Name Key Bridge</p>
+            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">Snapper · Northeast from ramp</p>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-outline">place</span>
+          <div>
+            <p class="font-headline font-bold text-primary">Big Torch West Channel</p>
+            <p class="text-[10px] font-bold text-outline uppercase tracking-wider">Permit · West, furthest run</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+  <a href="index.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Home</span>
+  </a>
+  <a href="radar.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">radar</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Radar</span>
+  </a>
+  <a href="tides.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">water_full</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Tides</span>
+  </a>
+  <a href="species.html" class="flex flex-col items-center text-[#fe6e60] active:scale-90 duration-200">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">set_meal</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
+  </a>
+</nav>
+</body>
+</html>

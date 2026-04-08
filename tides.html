@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Tides & Solunar — Big Pine Key</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#001e40"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-container": "#003366", "outline-variant": "#c3c6d1", "surface-variant": "#e0e3e5",
+          "primary": "#001e40", "secondary-fixed": "#f3e2ac", "primary-fixed-dim": "#a7c8ff",
+          "secondary": "#6a5e33", "surface-container-high": "#e5e9eb", "surface-bright": "#f7fafc",
+          "surface-container-low": "#f1f4f6", "primary-fixed": "#d5e3ff", "background": "#f7fafc",
+          "on-secondary-fixed": "#231b00", "on-secondary": "#ffffff", "on-surface": "#181c1e",
+          "outline": "#737780", "surface": "#f7fafc", "surface-tint": "#3a5f94",
+          "surface-container": "#ebeef0", "tertiary": "#460002", "on-primary": "#ffffff",
+          "on-tertiary-container": "#fe6e60", "surface-dim": "#d7dadc", "on-surface-variant": "#43474f",
+          "inverse-primary": "#a7c8ff", "on-primary-container": "#799dd6",
+          "tertiary-container": "#6e0105", "surface-container-highest": "#e0e3e5",
+          "on-secondary-container": "#706439", "secondary-fixed-dim": "#d6c692",
+          "surface-container-lowest": "#ffffff"
+        },
+        borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+        fontFamily: { "headline": ["Space Grotesk"], "body": ["Public Sans"], "label": ["Public Sans"] }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Public Sans', sans-serif; min-height: max(884px, 100dvh); }
+</style>
+</head>
+<body class="bg-background text-on-surface pb-28">
+
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-50 bg-[#001e40] flex justify-between items-center w-full px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-white">anchor</span>
+    <h1 class="font-headline text-white text-base font-bold tracking-tight">Tides & Solunar</h1>
+  </div>
+  <div class="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+    <span class="text-[10px] text-white font-bold uppercase tracking-widest">NOAA Live</span>
+  </div>
+</header>
+
+<main class="max-w-lg mx-auto px-4 pt-6 space-y-5">
+
+  <!-- HERO: Current Tide Status -->
+  <section class="rounded-xl p-6 text-white shadow-xl relative overflow-hidden" style="background: linear-gradient(135deg, #001e40 0%, #003366 100%);">
+    <div class="relative z-10 flex items-end justify-between">
+      <div>
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-primary-container">Big Pine Key · NOAA 8724580</span>
+        <h2 class="font-headline text-5xl font-bold mt-1" id="tide-status">Loading...</h2>
+        <p class="font-body text-lg opacity-80 mt-0.5" id="tide-height">—</p>
+      </div>
+      <div class="text-right">
+        <span class="font-label text-[10px] uppercase tracking-[0.15em] text-on-primary-container block mb-1" id="next-tide-label">Next High</span>
+        <div class="font-headline text-2xl font-medium" id="next-tide-time">—</div>
+        <div class="font-label text-sm text-on-primary-container" id="next-tide-ht">—</div>
+      </div>
+    </div>
+    <div class="absolute -top-4 -right-4 opacity-10">
+      <span class="material-symbols-outlined text-[180px]">water_full</span>
+    </div>
+  </section>
+
+  <!-- TIDE CHART -->
+  <section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline font-bold text-primary text-base">Today's Tide Cycle</h3>
+      <span class="font-label text-[10px] uppercase tracking-wider bg-surface-container-high px-2 py-1 rounded text-secondary">NOAA Station 8724580</span>
+    </div>
+    <div class="relative h-44 bg-surface-container-low rounded-lg overflow-hidden">
+      <div class="absolute inset-0 flex flex-col">
+        <div class="flex-1 border-b border-outline-variant/10 flex items-end px-2"><span class="text-[8px] text-outline">HIGH</span></div>
+        <div class="flex-1 border-b border-outline-variant/10 flex items-end px-2"><span class="text-[8px] text-outline">MID</span></div>
+        <div class="flex-1 flex items-end px-2"><span class="text-[8px] text-outline">LOW</span></div>
+      </div>
+      <svg id="tide-svg" class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 200">
+        <defs>
+          <linearGradient id="tideGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#3a5f94;stop-opacity:0.35"/>
+            <stop offset="100%" style="stop-color:#3a5f94;stop-opacity:0"/>
+          </linearGradient>
+        </defs>
+        <path id="tide-fill" d="M0,100 L1000,100 L1000,200 L0,200 Z" fill="url(#tideGrad)"/>
+        <path id="tide-line" d="M0,100 L1000,100" fill="none" stroke="#3a5f94" stroke-width="3"/>
+        <circle id="tide-marker" cx="500" cy="100" r="6" fill="#fe6e60" class="animate-pulse"/>
+      </svg>
+    </div>
+    <div class="flex justify-between mt-3 px-1">
+      <span class="font-label text-[10px] text-outline" id="chart-t0">06:00 AM</span>
+      <span class="font-label text-[10px] text-outline">12:00 PM</span>
+      <span class="font-label text-[10px] text-primary font-bold">NOW</span>
+      <span class="font-label text-[10px] text-outline">06:00 PM</span>
+      <span class="font-label text-[10px] text-outline">12:00 AM</span>
+    </div>
+  </section>
+
+  <!-- TIDE TABLE -->
+  <section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm">
+    <h4 class="font-label text-[10px] uppercase tracking-widest text-secondary mb-5">Today's Tide Schedule</h4>
+    <div id="tide-list" class="space-y-3">
+      <div class="text-center text-on-surface-variant text-sm py-4">Loading NOAA data...</div>
+    </div>
+  </section>
+
+  <!-- SOLUNAR + MOON -->
+  <section class="grid grid-cols-1 gap-4">
+    <div class="rounded-xl p-5 shadow-xl text-white relative overflow-hidden" style="background: linear-gradient(135deg, #001e40 0%, #003366 100%);">
+      <h4 class="font-label text-[10px] uppercase tracking-widest text-on-primary-container mb-5">Solunar Activity</h4>
+      <div class="flex items-center gap-5 mb-5">
+        <div class="bg-white/10 p-4 rounded-full">
+          <span class="material-symbols-outlined text-4xl" id="moon-icon" style="font-variation-settings:'FILL' 1;">brightness_2</span>
+        </div>
+        <div>
+          <p class="font-headline text-xl font-bold" id="moon-name">—</p>
+          <p class="text-sm opacity-70" id="moon-illum">—</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-white/8 p-3 rounded-lg">
+          <span class="font-label text-[9px] uppercase tracking-tighter opacity-50 block mb-1">Sunrise</span>
+          <p class="font-headline font-bold" id="sunrise-time">—</p>
+        </div>
+        <div class="bg-white/8 p-3 rounded-lg">
+          <span class="font-label text-[9px] uppercase tracking-tighter opacity-50 block mb-1">Sunset</span>
+          <p class="font-headline font-bold" id="sunset-time">—</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fishing Periods -->
+    <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings:'FILL' 1;">set_meal</span>
+        <h3 class="font-headline font-bold text-primary text-base">Solunar Fishing Periods</h3>
+      </div>
+      <div class="space-y-3">
+        <div class="bg-surface-container-low p-4 rounded-xl border-l-4 border-on-tertiary-container">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="font-label text-[10px] font-bold text-on-tertiary-container tracking-widest uppercase">Major Period</span>
+              <p class="font-headline text-lg font-bold mt-0.5" id="major-period">Calculating...</p>
+            </div>
+            <span class="material-symbols-outlined text-on-tertiary-container text-2xl" style="font-variation-settings:'FILL' 1;">star</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-surface-container px-4 py-3 rounded-xl">
+            <span class="font-label text-[9px] text-outline tracking-widest uppercase">Minor Period 1</span>
+            <p class="font-headline font-bold text-sm mt-1" id="minor-period-1">—</p>
+          </div>
+          <div class="bg-surface-container px-4 py-3 rounded-xl">
+            <span class="font-label text-[9px] text-outline tracking-widest uppercase">Minor Period 2</span>
+            <p class="font-headline font-bold text-sm mt-1" id="minor-period-2">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+  <a href="index.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Home</span>
+  </a>
+  <a href="radar.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">radar</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Radar</span>
+  </a>
+  <a href="tides.html" class="flex flex-col items-center text-[#fe6e60] active:scale-90 duration-200">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">water_full</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Tides</span>
+  </a>
+  <a href="species.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">set_meal</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
+  </a>
+</nav>
+
+<script>
+const LAT = 24.6717, LON = -81.3566;
+const NOAA_STATION = "8724580";
+const TZ = "America/New_York";
+
+function fmtTime(str) {
+  const d = new Date(str.includes("T") ? str : str + ":00");
+  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: TZ });
+}
+function degToCompass(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+
+// Sun times
+function getSunTimes(lat, lon, date) {
+  const rad = Math.PI / 180;
+  const JD = date.getTime() / 86400000 + 2440587.5;
+  const n = Math.floor(JD - 2451545.0 + 0.0008);
+  const Jstar = n - lon / 360;
+  const M = (357.5291 + 0.98560028 * Jstar) % 360;
+  const C = 1.9148 * Math.sin(M * rad) + 0.0200 * Math.sin(2 * M * rad);
+  const lambda = (M + C + 180 + 102.9372) % 360;
+  const Jtransit = 2451545.0 + Jstar + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * lambda * rad);
+  const sinD = Math.sin(lambda * rad) * Math.sin(23.44 * rad);
+  const cosD = Math.cos(Math.asin(sinD));
+  const cosH = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * sinD) / (Math.cos(lat * rad) * cosD);
+  if (Math.abs(cosH) > 1) return null;
+  const H = Math.acos(cosH) / rad;
+  const toDate = j => new Date((j - 2440587.5) * 86400000);
+  return { sunrise: toDate(Jtransit - H / 360), sunset: toDate(Jtransit + H / 360) };
+}
+
+function getMoonPhase(date) {
+  const knownNew = new Date("2000-01-06T18:14:00Z");
+  const cycle = 29.53058867;
+  const phase = (((date - knownNew) / (86400000)) % cycle + cycle) % cycle;
+  const pct = Math.round((phase / cycle) * 100);
+  let name, icon;
+  if (phase < 1.85) { name = "New Moon"; icon = "dark_mode"; }
+  else if (phase < 7.38) { name = "Waxing Crescent"; icon = "brightness_3"; }
+  else if (phase < 9.22) { name = "First Quarter"; icon = "brightness_5"; }
+  else if (phase < 14.77) { name = "Waxing Gibbous"; icon = "brightness_2"; }
+  else if (phase < 16.61) { name = "Full Moon"; icon = "brightness_7"; }
+  else if (phase < 22.15) { name = "Waning Gibbous"; icon = "brightness_2"; }
+  else if (phase < 23.99) { name = "Last Quarter"; icon = "brightness_5"; }
+  else { name = "Waning Crescent"; icon = "brightness_3"; }
+  return { name, icon, pct, phase };
+}
+
+function calcSolunar(date, lat, lon) {
+  const moonCycle = 29.53058867;
+  const knownNew = new Date("2000-01-06T18:14:00Z");
+  const phase = (((date - knownNew) / 86400000) % moonCycle + moonCycle) % moonCycle;
+  const lunarDay = 24 * 60 + 50; // lunar day in minutes
+  const dayOfCycle = Math.floor(phase);
+  const transitMin = (dayOfCycle * 50) % (24 * 60);
+  const t1 = new Date(date); t1.setHours(0, transitMin, 0, 0);
+  const t2 = new Date(t1.getTime() + 12 * 3600000);
+  const minor1 = new Date(t1.getTime() + 6 * 3600000);
+  const minor2 = new Date(t2.getTime() + 6 * 3600000);
+  const fmt = (d, min) => {
+    const s = new Date(d.getTime() - min / 2 * 60000);
+    const e = new Date(d.getTime() + min / 2 * 60000);
+    return `${s.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:TZ})} — ${e.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true,timeZone:TZ})}`;
+  };
+  // Find which major window is during daylight
+  const sun = getSunTimes(lat, lon, date);
+  const rise = sun ? sun.sunrise : new Date(date.setHours(7,0,0,0));
+  let major = t1;
+  if (t1 < rise && t2 > rise) major = t2;
+  return { major: fmt(major, 120), minor1: fmt(minor1, 60), minor2: fmt(minor2, 60) };
+}
+
+async function init() {
+  const today = new Date();
+  const moon = getMoonPhase(today);
+  const sun = getSunTimes(LAT, LON, today);
+  const solunar = calcSolunar(today, LAT, LON);
+
+  // Moon / sun
+  document.getElementById("moon-name").textContent = moon.name;
+  document.getElementById("moon-illum").textContent = `${moon.pct}% illumination`;
+  document.getElementById("moon-icon").textContent = moon.icon;
+  document.getElementById("sunrise-time").textContent = sun ? fmtTime(sun.sunrise.toISOString()) : "—";
+  document.getElementById("sunset-time").textContent = sun ? fmtTime(sun.sunset.toISOString()) : "—";
+
+  // Solunar
+  document.getElementById("major-period").textContent = solunar.major;
+  document.getElementById("minor-period-1").textContent = solunar.minor1;
+  document.getElementById("minor-period-2").textContent = solunar.minor2;
+
+  // NOAA tides
+  const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
+  try {
+    const [hiloRes, wlRes] = await Promise.all([
+      fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${dateStr}&end_date=${dateStr}&station=${NOAA_STATION}&product=predictions&datum=MLLW&time_zone=lst_ldt&interval=hilo&units=english&application=web_services&format=json`),
+      fetch(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${dateStr}&end_date=${dateStr}&station=${NOAA_STATION}&product=predictions&datum=MLLW&time_zone=lst_ldt&interval=h&units=english&application=web_services&format=json`)
+    ]);
+    const hiloData = await hiloRes.json();
+    const wlData = await wlRes.json();
+    const tides = hiloData.predictions || [];
+    const hourly = wlData.predictions || [];
+    const now = new Date();
+
+    // Hero status
+    const upcoming = tides.filter(t => new Date(t.t) > now);
+    const prev = tides.filter(t => new Date(t.t) <= now);
+    const lastTide = prev.length > 0 ? prev[prev.length - 1] : null;
+    const nextTide = upcoming.length > 0 ? upcoming[0] : null;
+
+    if (lastTide && nextTide) {
+      const isRising = nextTide.type === "H";
+      document.getElementById("tide-status").textContent = isRising ? "Incoming" : "Outgoing";
+      document.getElementById("next-tide-label").textContent = nextTide.type === "H" ? "Next High Tide" : "Next Low Tide";
+      document.getElementById("next-tide-time").textContent = fmtTime(nextTide.t);
+      document.getElementById("next-tide-ht").textContent = `${parseFloat(nextTide.v).toFixed(1)} ft`;
+      // Current height approx
+      if (hourly.length > 0) {
+        const closest = hourly.reduce((a, b) =>
+          Math.abs(new Date(b.t) - now) < Math.abs(new Date(a.t) - now) ? b : a);
+        const ht = parseFloat(closest.v).toFixed(1);
+        document.getElementById("tide-height").textContent = `${ht} ft and ${isRising ? "rising" : "falling"}`;
+      }
+    }
+
+    // Tide table
+    const listEl = document.getElementById("tide-list");
+    if (tides.length > 0) {
+      listEl.innerHTML = tides.map(t => {
+        const isHigh = t.type === "H";
+        const isPast = new Date(t.t) < now;
+        const icon = isHigh ? "arrow_upward" : "arrow_downward";
+        const iconColor = isHigh ? "text-primary" : "text-outline";
+        const opacity = isPast ? "opacity-40" : "";
+        return `<div class="flex items-center justify-between py-2.5 border-b border-surface-container last:border-0 ${opacity}">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined ${iconColor} text-lg">${icon}</span>
+            <div>
+              <p class="font-headline font-bold text-primary text-sm">${isHigh ? "High Tide" : "Low Tide"}</p>
+              <p class="font-label text-[10px] text-outline uppercase tracking-tighter">${fmtTime(t.t)}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-headline font-bold text-primary">${parseFloat(t.v).toFixed(1)} ft</p>
+            ${isPast ? '<p class="text-[9px] text-outline font-label">passed</p>' : ''}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    // Tide chart SVG
+    if (hourly.length > 0) {
+      const heights = hourly.map(h => parseFloat(h.v));
+      const minH = Math.min(...heights);
+      const maxH = Math.max(...heights);
+      const range = maxH - minH || 1;
+      const pts = heights.map((h, i) => {
+        const x = (i / (heights.length - 1)) * 1000;
+        const y = 190 - ((h - minH) / range) * 170;
+        return `${x},${y}`;
+      });
+      const pathD = "M" + pts.join(" L");
+      const fillD = pathD + ` L1000,200 L0,200 Z`;
+      document.getElementById("tide-line").setAttribute("d", pathD);
+      document.getElementById("tide-fill").setAttribute("d", fillD);
+      // Current position marker
+      const nowIdx = hourly.findIndex(h => new Date(h.t) >= now);
+      if (nowIdx > 0) {
+        const cx = (nowIdx / (hourly.length - 1)) * 1000;
+        const cy = 190 - ((parseFloat(hourly[nowIdx].v) - minH) / range) * 170;
+        document.getElementById("tide-marker").setAttribute("cx", cx);
+        document.getElementById("tide-marker").setAttribute("cy", cy);
+      }
+    }
+
+  } catch(e) {
+    document.getElementById("tide-status").textContent = "Offline";
+    document.getElementById("tide-height").textContent = "Check NOAA directly";
+    document.getElementById("tide-list").innerHTML = `<div class="text-center text-on-surface-variant text-sm py-4">
+      Unable to load tide data. <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8724580" target="_blank" class="text-primary font-bold underline">View on NOAA</a>
+    </div>`;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>

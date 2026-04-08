@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Radar & Forecast — Big Pine Key</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#001e40"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-container": "#003366", "outline-variant": "#c3c6d1", "surface-variant": "#e0e3e5",
+          "on-background": "#181c1e", "primary": "#001e40", "secondary-fixed": "#f3e2ac",
+          "primary-fixed-dim": "#a7c8ff", "secondary-container": "#f3e2ac", "secondary": "#6a5e33",
+          "surface-container-high": "#e5e9eb", "surface-bright": "#f7fafc",
+          "surface-container-low": "#f1f4f6", "primary-fixed": "#d5e3ff", "background": "#f7fafc",
+          "on-secondary-fixed": "#231b00", "on-secondary": "#ffffff", "on-surface": "#181c1e",
+          "outline": "#737780", "surface": "#f7fafc", "surface-tint": "#3a5f94",
+          "surface-container": "#ebeef0", "tertiary": "#460002", "on-primary": "#ffffff",
+          "on-tertiary-container": "#fe6e60", "surface-dim": "#d7dadc",
+          "on-surface-variant": "#43474f", "inverse-primary": "#a7c8ff",
+          "on-primary-container": "#799dd6", "tertiary-container": "#6e0105",
+          "surface-container-highest": "#e0e3e5", "on-tertiary": "#ffffff",
+          "secondary-fixed-dim": "#d6c692", "surface-container-lowest": "#ffffff"
+        },
+        borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+        fontFamily: { "headline": ["Space Grotesk"], "body": ["Public Sans"], "label": ["Public Sans"] }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Public Sans', sans-serif; }
+  .glass-panel { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  input[type='range'] { -webkit-appearance: none; background: transparent; width: 100%; }
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 22px; width: 22px; border-radius: 50%;
+    background: #001e40; cursor: pointer; border: 2px solid white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-top: -9px;
+  }
+  input[type='range']::-webkit-slider-runnable-track {
+    width: 100%; height: 4px; background: rgba(0,30,64,0.2); border-radius: 2px;
+  }
+</style>
+</head>
+<body class="bg-background font-body text-on-surface">
+
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#001e40] flex justify-between items-center px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-white">anchor</span>
+    <h1 class="font-headline text-white text-base font-bold tracking-tight">Radar & Forecast</h1>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+      <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+      <span class="text-[10px] text-white font-bold uppercase tracking-widest">Live</span>
+    </div>
+  </div>
+</header>
+
+<!-- RAIN RADAR EMBED (NWS Key West) -->
+<div class="relative w-full" style="height: 100dvh; padding-top: 64px; padding-bottom: 80px;">
+  <div class="absolute inset-0" style="top: 64px; bottom: 80px;">
+    <!-- Live NWS radar loop for Key West (KBYX) -->
+    <iframe
+      src="https://radar.weather.gov/station/KBYX/standard"
+      class="w-full h-full border-0"
+      title="NWS Key West Radar"
+      loading="lazy"
+    ></iframe>
+    <!-- Overlay: layer toggles -->
+    <div class="absolute top-3 left-0 right-0 flex justify-center pointer-events-none z-10">
+      <div class="glass-panel rounded-full px-3 py-1.5 flex items-center gap-1 shadow-lg border border-white/20 pointer-events-auto">
+        <a href="https://radar.weather.gov/station/KBYX/standard" target="_blank"
+           class="px-4 py-1.5 rounded-full bg-primary text-white font-bold text-[11px] flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-xs">radar</span> NWS Radar
+        </a>
+        <a href="https://www.windy.com/?24.671,-81.356,10" target="_blank"
+           class="px-4 py-1.5 rounded-full text-primary font-bold text-[11px] flex items-center gap-1.5 hover:bg-surface-container-high/50">
+          <span class="material-symbols-outlined text-xs">air</span> Windy
+        </a>
+        <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8724580" target="_blank"
+           class="px-4 py-1.5 rounded-full text-primary font-bold text-[11px] flex items-center gap-1.5 hover:bg-surface-container-high/50">
+          <span class="material-symbols-outlined text-xs">water_full</span> NOAA
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEATHER DATA PANEL (scrolls below map on smaller screens) -->
+<div class="bg-background px-4 pt-4 pb-28 space-y-4 max-w-lg mx-auto">
+
+  <!-- 24-Hour Hourly Forecast -->
+  <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm">
+    <h3 class="font-headline font-bold text-primary text-base mb-4">24-Hour Wind Forecast</h3>
+    <div id="hourly-wind" class="flex gap-3 overflow-x-auto pb-2" style="-ms-overflow-style:none; scrollbar-width:none;"></div>
+  </div>
+
+  <!-- Conditions Grid -->
+  <div class="grid grid-cols-2 gap-3">
+    <div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+      <p class="text-[10px] font-label uppercase tracking-widest text-secondary mb-1">Sea Surface Temp</p>
+      <h3 class="font-headline text-3xl font-bold text-primary" id="sst">—</h3>
+      <p class="text-xs text-on-surface-variant mt-1" id="sst-note">Loading...</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+      <p class="text-[10px] font-label uppercase tracking-widest text-secondary mb-1">Visibility</p>
+      <h3 class="font-headline text-3xl font-bold text-primary">10+ <span class="text-base font-normal">NM</span></h3>
+      <p class="text-xs text-emerald-600 font-bold uppercase tracking-tighter mt-1">Clear Conditions</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+      <p class="text-[10px] font-label uppercase tracking-widest text-secondary mb-1">Wind Now</p>
+      <h3 class="font-headline text-3xl font-bold text-primary" id="wind-radar">—</h3>
+      <p class="text-xs text-on-surface-variant mt-1" id="wind-dir-radar">—</p>
+    </div>
+    <div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm">
+      <p class="text-[10px] font-label uppercase tracking-widest text-secondary mb-1">Pressure</p>
+      <h3 class="font-headline text-3xl font-bold text-primary" id="pressure">—</h3>
+      <p class="text-xs text-on-surface-variant mt-1" id="pressure-trend">—</p>
+    </div>
+  </div>
+
+  <!-- Radar station info -->
+  <div class="bg-surface-container-low rounded-xl p-4 flex items-center gap-4">
+    <div class="bg-primary/10 p-3 rounded-full">
+      <span class="material-symbols-outlined text-primary text-xl">radar</span>
+    </div>
+    <div>
+      <p class="font-headline font-bold text-primary text-sm">KBYX — Key West Radar</p>
+      <p class="text-xs text-on-surface-variant">NWS radar. Live loop updates every 5 minutes.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+  <a href="index.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">home</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Home</span>
+  </a>
+  <a href="radar.html" class="flex flex-col items-center text-[#fe6e60] active:scale-90 duration-200">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">radar</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Radar</span>
+  </a>
+  <a href="tides.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">water_full</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Tides</span>
+  </a>
+  <a href="species.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">set_meal</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
+  </a>
+</nav>
+
+<script>
+const LAT = 24.6717, LON = -81.3566;
+
+function degToCompass(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+function celsiusToF(c) { return (c * 9/5 + 32).toFixed(0); }
+
+async function init() {
+  try {
+    const [wxRes, marineRes] = await Promise.all([
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=windspeed_10m,winddirection_10m,precipitation_probability,weathercode,surface_pressure&current_weather=true&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=2`),
+      fetch(`https://api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&hourly=sea_surface_temperature&timezone=America%2FNew_York&forecast_days=1`)
+    ]);
+    const wx = await wxRes.json();
+    const marine = await marineRes.json();
+
+    if (wx.current_weather) {
+      const cw = wx.current_weather;
+      document.getElementById("wind-radar").textContent = `${cw.windspeed.toFixed(0)} kt`;
+      document.getElementById("wind-dir-radar").textContent = `From ${degToCompass(cw.winddirection)}`;
+    }
+
+    // Pressure
+    if (wx.hourly && wx.hourly.surface_pressure) {
+      const p = wx.hourly.surface_pressure[0];
+      const pInHg = (p * 0.02953).toFixed(2);
+      document.getElementById("pressure").textContent = `${pInHg}"`;
+      const p2 = wx.hourly.surface_pressure[3];
+      const trend = p2 > p + 1 ? "Rising" : p2 < p - 1 ? "Falling" : "Steady";
+      const tColor = trend === "Falling" ? "text-amber-600" : "text-emerald-600";
+      document.getElementById("pressure-trend").innerHTML = `<span class="${tColor} font-bold">${trend}</span> over 3 hours`;
+    }
+
+    // Sea surface temp
+    if (marine.hourly && marine.hourly.sea_surface_temperature) {
+      const sst = marine.hourly.sea_surface_temperature[0];
+      if (sst !== null) {
+        const sstF = celsiusToF(sst);
+        document.getElementById("sst").textContent = `${sstF}°F`;
+        document.getElementById("sst-note").textContent =
+          parseInt(sstF) >= 74 && parseInt(sstF) <= 86 ? "Prime range for Keys species" : "Monitor for fish movement";
+      }
+    }
+
+    // 24-hour wind scroll
+    if (wx.hourly) {
+      const now = new Date();
+      const container = document.getElementById("hourly-wind");
+      let slots = [];
+      wx.hourly.time.forEach((t, i) => {
+        const tDate = new Date(t);
+        const diffH = (tDate - now) / 3600000;
+        if (diffH >= 0 && diffH <= 24) {
+          slots.push({ time: tDate, wind: wx.hourly.windspeed_10m[i], dir: wx.hourly.winddirection_10m[i], code: wx.hourly.weathercode[i], precip: wx.hourly.precipitation_probability[i] });
+        }
+      });
+      container.innerHTML = slots.map(s => {
+        const hr = s.time.toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
+        const color = s.wind > 20 ? "border-red-400" : s.wind > 14 ? "border-amber-400" : "border-emerald-400";
+        const storm = s.code >= 95 ? "⛈" : s.code >= 80 ? "🌧" : s.code >= 51 ? "🌦" : s.precip > 40 ? "🌂" : "☀";
+        return `<div class="shrink-0 w-16 bg-surface-container-low rounded-xl p-2.5 text-center border-b-2 ${color}">
+          <p class="text-[9px] text-outline font-label uppercase">${hr}</p>
+          <p class="font-headline font-bold text-primary text-sm mt-1">${s.wind.toFixed(0)}</p>
+          <p class="text-[9px] text-outline font-label">kt</p>
+          <p class="text-base mt-1">${storm}</p>
+        </div>`;
+      }).join("");
+    }
+  } catch(e) {
+    console.error("Weather fetch error:", e);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Erik's Fishing App — Big Pine Key</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#001e40"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="BPK Fishing"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary-container": "#003366",
+          "outline-variant": "#c3c6d1",
+          "surface-variant": "#e0e3e5",
+          "on-background": "#181c1e",
+          "primary": "#001e40",
+          "secondary-fixed": "#f3e2ac",
+          "primary-fixed-dim": "#a7c8ff",
+          "secondary-container": "#f3e2ac",
+          "secondary": "#6a5e33",
+          "surface-container-high": "#e5e9eb",
+          "on-primary-fixed": "#001b3c",
+          "surface-bright": "#f7fafc",
+          "surface-container-low": "#f1f4f6",
+          "primary-fixed": "#d5e3ff",
+          "background": "#f7fafc",
+          "on-secondary-fixed": "#231b00",
+          "on-secondary": "#ffffff",
+          "inverse-surface": "#2d3133",
+          "on-surface": "#181c1e",
+          "outline": "#737780",
+          "surface": "#f7fafc",
+          "surface-tint": "#3a5f94",
+          "surface-container": "#ebeef0",
+          "tertiary": "#460002",
+          "on-primary": "#ffffff",
+          "tertiary-fixed-dim": "#ffb4aa",
+          "on-tertiary-container": "#fe6e60",
+          "on-primary-fixed-variant": "#1f477b",
+          "surface-dim": "#d7dadc",
+          "on-error-container": "#93000a",
+          "on-surface-variant": "#43474f",
+          "inverse-primary": "#a7c8ff",
+          "on-primary-container": "#799dd6",
+          "tertiary-container": "#6e0105",
+          "surface-container-highest": "#e0e3e5",
+          "inverse-on-surface": "#eef1f3",
+          "on-tertiary": "#ffffff",
+          "on-secondary-container": "#706439",
+          "secondary-fixed-dim": "#d6c692",
+          "surface-container-lowest": "#ffffff",
+          "error": "#ba1a1a",
+          "on-tertiary-fixed": "#410001"
+        },
+        borderRadius: {
+          "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"
+        },
+        fontFamily: {
+          "headline": ["Space Grotesk"], "body": ["Public Sans"], "label": ["Public Sans"]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  body { font-family: 'Public Sans', sans-serif; min-height: max(884px, 100dvh); }
+  h1,h2,h3,.font-headline { font-family: 'Space Grotesk', sans-serif; }
+  .signature-gradient { background: linear-gradient(135deg, #001e40 0%, #003366 100%); }
+  .glass-panel { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .go-banner { background: linear-gradient(135deg, #14532d 0%, #166534 100%); }
+  .caution-banner { background: linear-gradient(135deg, #78350f 0%, #92400e 100%); }
+  .nogo-banner { background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); }
+  .safety-card { background: linear-gradient(135deg, #1c1917 0%, #292524 100%); }
+  .spot-card { position: relative; overflow: hidden; border-radius: 0.5rem; }
+  .spot-card img { transition: transform 0.6s ease; }
+  .spot-card:hover img { transform: scale(1.04); }
+  .week-scroll::-webkit-scrollbar { display: none; }
+  .week-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.6;transform:scale(1.4);} }
+  .pulse-dot { animation: pulse-dot 1.8s ease-in-out infinite; }
+</style>
+</head>
+<body class="bg-surface text-on-surface pb-24">
+
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-50 bg-[#001e40] flex justify-between items-center w-full px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-white text-xl">anchor</span>
+    <div>
+      <h1 class="font-headline text-white text-base font-bold leading-none tracking-tight">Big Pine Key</h1>
+      <p class="text-[10px] text-blue-200 uppercase tracking-widest font-label" id="today-date">Loading...</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-1">
+    <div class="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+      <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
+      <span class="text-[10px] text-white font-bold uppercase tracking-widest">Live</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-lg mx-auto px-4 pt-5 space-y-5">
+
+  <!-- 1. GO / CAUTION / NO-GO BANNER -->
+  <section id="go-banner" class="go-banner rounded-xl p-5 shadow-xl">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center">
+          <span class="material-symbols-outlined text-white text-3xl" id="go-icon" style="font-variation-settings:'FILL' 1;">check_circle</span>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 font-label">Today's Verdict</p>
+          <h2 class="font-headline text-3xl font-bold text-white leading-none" id="go-text">GO FISH</h2>
+          <p class="text-sm text-white/80 mt-0.5 font-body" id="go-reason">Loading conditions...</p>
+        </div>
+      </div>
+      <div class="text-right">
+        <p class="text-[10px] text-white/60 uppercase tracking-widest font-label">Score</p>
+        <p class="font-headline text-4xl font-bold text-white" id="fishing-score">—</p>
+        <p class="text-[10px] text-white/60 font-label">/10</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PRIME WINDOW + QUICK CONDITIONS -->
+  <section class="signature-gradient rounded-xl p-5 shadow-lg">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.2em] text-on-primary-container font-label mb-1">Prime Window Today</p>
+        <h3 class="font-headline text-2xl font-bold text-secondary-fixed" id="prime-window">Loading...</h3>
+        <p class="text-sm text-white/70 mt-1 font-body" id="prime-reason">Calculating...</p>
+      </div>
+      <div class="bg-secondary-fixed/20 p-2.5 rounded-full">
+        <span class="material-symbols-outlined text-secondary-fixed text-2xl" style="font-variation-settings:'FILL' 1;">schedule</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-white/10 rounded-lg p-3 text-center">
+        <p class="text-[9px] text-blue-200 uppercase tracking-wider font-label mb-1">Wind</p>
+        <p class="font-headline font-bold text-white text-sm" id="wind-now">—</p>
+      </div>
+      <div class="bg-white/10 rounded-lg p-3 text-center">
+        <p class="text-[9px] text-blue-200 uppercase tracking-wider font-label mb-1">Tide</p>
+        <p class="font-headline font-bold text-white text-sm" id="tide-now">—</p>
+      </div>
+      <div class="bg-white/10 rounded-lg p-3 text-center">
+        <p class="text-[9px] text-blue-200 uppercase tracking-wider font-label mb-1">Air Temp</p>
+        <p class="font-headline font-bold text-white text-sm" id="temp-now">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SAFETY & WEATHER (PROMINENT) -->
+  <section id="safety-panel" class="safety-card rounded-xl p-5 shadow-xl">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="material-symbols-outlined text-amber-400 text-xl" style="font-variation-settings:'FILL' 1;">warning</span>
+      <h3 class="font-headline font-bold text-white text-base">12-Hour Safety Forecast</h3>
+      <span class="ml-auto text-[9px] bg-white/10 text-white/70 px-2 py-1 rounded-full uppercase tracking-widest font-label" id="safety-updated">Updating...</span>
+    </div>
+    <div id="advisory-box" class="hidden mb-4 bg-red-900/60 border border-red-500/40 rounded-lg p-3 flex items-start gap-2">
+      <span class="material-symbols-outlined text-red-400 text-lg mt-0.5" style="font-variation-settings:'FILL' 1;">crisis_alert</span>
+      <p class="text-sm text-red-200 font-medium" id="advisory-text"></p>
+    </div>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="bg-white/8 rounded-lg p-3">
+        <p class="text-[9px] text-white/50 uppercase tracking-wider font-label mb-1">Wind Now</p>
+        <p class="font-headline text-xl font-bold text-white" id="safety-wind">—</p>
+        <p class="text-[10px] text-white/60 font-body" id="safety-wind-dir">—</p>
+      </div>
+      <div class="bg-white/8 rounded-lg p-3">
+        <p class="text-[9px] text-white/50 uppercase tracking-wider font-label mb-1">Storm Risk</p>
+        <p class="font-headline text-xl font-bold" id="storm-risk-text">—</p>
+        <p class="text-[10px] text-white/60 font-body" id="storm-risk-sub">—</p>
+      </div>
+    </div>
+    <!-- 12-hour wind bars -->
+    <div>
+      <p class="text-[9px] text-white/40 uppercase tracking-widest font-label mb-2">Wind Trend (Next 12 Hrs)</p>
+      <div class="flex items-end gap-1 h-10" id="wind-bars">
+        <!-- filled by JS -->
+      </div>
+      <div class="flex justify-between mt-1">
+        <span class="text-[8px] text-white/30 font-label">Now</span>
+        <span class="text-[8px] text-white/30 font-label">+6h</span>
+        <span class="text-[8px] text-white/30 font-label">+12h</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. TOP 2 SPOTS -->
+  <section>
+    <h3 class="font-headline text-lg font-bold text-primary mb-3 px-1">Best Spots Today</h3>
+    <div class="space-y-4" id="spots-container">
+
+      <!-- Spot 1 -->
+      <div class="spot-card bg-surface-container-lowest shadow-md">
+        <div class="relative h-44 overflow-hidden rounded-t-xl">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bahia_Honda_State_Park_aerial.jpg/1280px-Bahia_Honda_State_Park_aerial.jpg"
+               alt="Bahia Honda Bridge area"
+               class="w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
+          <div class="absolute top-3 left-3">
+            <span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full font-label">#1 Pick</span>
+          </div>
+          <div class="absolute bottom-3 left-4 right-4">
+            <h4 class="font-headline text-xl font-bold text-white">Bahia Honda Bridge</h4>
+            <p class="text-[11px] text-white/80 uppercase tracking-widest font-label">Tarpon Alley</p>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="flex gap-3 mb-3">
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Target Species</p>
+              <p class="font-headline font-bold text-primary text-sm">Tarpon</p>
+            </div>
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Live Crab</p>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant font-body leading-relaxed" id="spot1-why">Incoming tide pushes bait against bridge pylons. Best window: first two hours of light.</p>
+        </div>
+      </div>
+
+      <!-- Spot 2 -->
+      <div class="spot-card bg-surface-container-lowest shadow-md">
+        <div class="relative h-44 overflow-hidden rounded-t-xl">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Florida_Keys_National_Marine_Sanctuary.jpg/1280px-Florida_Keys_National_Marine_Sanctuary.jpg"
+               alt="Content Keys flats"
+               class="w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
+          <div class="absolute top-3 left-3">
+            <span class="bg-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full font-label backdrop-blur-sm">#2 Pick</span>
+          </div>
+          <div class="absolute bottom-3 left-4 right-4">
+            <h4 class="font-headline text-xl font-bold text-white">Content Keys Flats</h4>
+            <p class="text-[11px] text-white/80 uppercase tracking-widest font-label">Bonefish Flats</p>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="flex gap-3 mb-3">
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Target Species</p>
+              <p class="font-headline font-bold text-primary text-sm">Bonefish</p>
+            </div>
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">Live Shrimp</p>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant font-body leading-relaxed" id="spot2-why">Tailing fish on eastern edge as tide floods the marl flats. Low light keeps them active.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. WHY PRIME TIME WORKS -->
+  <section class="bg-surface-container-lowest rounded-xl p-5 shadow-sm">
+    <h3 class="font-headline font-bold text-primary text-base mb-4">Why This Window</h3>
+    <div class="space-y-4">
+      <div class="flex gap-3 items-start">
+        <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-on-secondary-container text-lg">waves</span>
+        </div>
+        <div>
+          <p class="font-headline text-sm font-bold text-primary" id="why-tide-title">Tide</p>
+          <p class="text-xs text-on-surface-variant font-body leading-relaxed" id="why-tide-body">Loading tide data...</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-start">
+        <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-on-secondary-container text-lg">wb_twilight</span>
+        </div>
+        <div>
+          <p class="font-headline text-sm font-bold text-primary" id="why-sun-title">Sunrise Advantage</p>
+          <p class="text-xs text-on-surface-variant font-body leading-relaxed" id="why-sun-body">Low light gives predators cover on the flats. Fish feed aggressively in the first two hours after sunrise.</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-start">
+        <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-on-secondary-container text-lg">thermostat</span>
+        </div>
+        <div>
+          <p class="font-headline text-sm font-bold text-primary">Water Temp</p>
+          <p class="text-xs text-on-surface-variant font-body leading-relaxed" id="why-temp-body">Loading water temp...</p>
+        </div>
+      </div>
+      <div class="flex gap-3 items-start">
+        <div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-on-secondary-container text-lg" style="font-variation-settings:'FILL' 1;">brightness_2</span>
+        </div>
+        <div>
+          <p class="font-headline text-sm font-bold text-primary" id="moon-phase-title">Moon Phase</p>
+          <p class="text-xs text-on-surface-variant font-body leading-relaxed" id="moon-phase-body">Loading lunar data...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. WEEKLY OUTLOOK -->
+  <section class="pb-4">
+    <h3 class="font-headline font-bold text-primary text-base mb-3 px-1">This Week</h3>
+    <div class="flex gap-3 overflow-x-auto week-scroll pb-2" id="weekly-outlook">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+  <a href="index.html" class="flex flex-col items-center text-[#fe6e60] active:scale-90 transition-transform duration-200">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Home</span>
+  </a>
+  <a href="radar.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">radar</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Radar</span>
+  </a>
+  <a href="tides.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">water_full</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Tides</span>
+  </a>
+  <a href="species.html" class="flex flex-col items-center text-slate-400 hover:text-white transition-colors active:scale-90 duration-200">
+    <span class="material-symbols-outlined">set_meal</span>
+    <span class="font-label text-[10px] uppercase tracking-widest mt-0.5">Species</span>
+  </a>
+</nav>
+
+<script>
+// ============================================================
+// CONFIG — Big Pine Key boat ramp coordinates
+// ============================================================
+const LAT = 24.6717;
+const LON = -81.3566;
+const NOAA_STATION = "8724580"; // Big Pine Key
+const TZ = "America/New_York";
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function fmtTime(isoStr) {
+  const d = new Date(isoStr);
+  return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: TZ });
+}
+function fmtHour(isoStr) {
+  const d = new Date(isoStr);
+  return d.toLocaleTimeString("en-US", { hour: "numeric", hour12: true, timeZone: TZ });
+}
+function metersPerSecToKnots(mps) { return (mps * 1.94384).toFixed(0); }
+function degToCompass(deg) {
+  const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+function celsiusToF(c) { return (c * 9/5 + 32).toFixed(0); }
+
+// ============================================================
+// DATE
+// ============================================================
+function setDate() {
+  const now = new Date();
+  const opts = { weekday: "long", month: "short", day: "numeric", timeZone: TZ };
+  document.getElementById("today-date").textContent = now.toLocaleDateString("en-US", opts).toUpperCase();
+}
+
+// ============================================================
+// SOLUNAR — calculate sunrise, sunset, moon phase locally
+// ============================================================
+function getSunTimes(lat, lon, date) {
+  const rad = Math.PI / 180;
+  const JD = date.getTime() / 86400000 + 2440587.5;
+  const n = Math.floor(JD - 2451545.0 + 0.0008);
+  const Jstar = n - lon / 360;
+  const M = (357.5291 + 0.98560028 * Jstar) % 360;
+  const C = 1.9148 * Math.sin(M * rad) + 0.0200 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+  const lambda = (M + C + 180 + 102.9372) % 360;
+  const Jtransit = 2451545.0 + Jstar + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * lambda * rad);
+  const sinD = Math.sin(lambda * rad) * Math.sin(23.44 * rad);
+  const cosD = Math.cos(Math.asin(sinD));
+  const cosH = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * sinD) / (Math.cos(lat * rad) * cosD);
+  if (Math.abs(cosH) > 1) return null;
+  const H = Math.acos(cosH) / rad;
+  const Jrise = Jtransit - H / 360;
+  const Jset = Jtransit + H / 360;
+  const toDate = j => new Date((j - 2440587.5) * 86400000);
+  return { sunrise: toDate(Jrise), sunset: toDate(Jset) };
+}
+
+function getMoonPhase(date) {
+  const knownNew = new Date("2000-01-06T18:14:00Z");
+  const cycle = 29.53058867;
+  const diff = (date - knownNew) / (1000 * 60 * 60 * 24);
+  const phase = ((diff % cycle) + cycle) % cycle;
+  const pct = Math.round((phase / cycle) * 100);
+  let name, icon;
+  if (phase < 1.85) { name = "New Moon"; icon = "dark_mode"; }
+  else if (phase < 7.38) { name = "Waxing Crescent"; icon = "brightness_3"; }
+  else if (phase < 9.22) { name = "First Quarter"; icon = "brightness_5"; }
+  else if (phase < 14.77) { name = "Waxing Gibbous"; icon = "brightness_2"; }
+  else if (phase < 16.61) { name = "Full Moon"; icon = "brightness_7"; }
+  else if (phase < 22.15) { name = "Waning Gibbous"; icon = "brightness_2"; }
+  else if (phase < 23.99) { name = "Last Quarter"; icon = "brightness_5"; }
+  else { name = "Waning Crescent"; icon = "brightness_3"; }
+  const fishingBonus = (phase < 2 || phase > 27.5 || (phase > 13.5 && phase < 17.5)) ? "high" : "moderate";
+  return { name, icon, pct, phase, fishingBonus };
+}
+
+function calcSolunarWindows(date, lat, lon) {
+  // Major periods: ~2hrs centered on lunar transit + opposite
+  // Minor periods: ~1hr at moonrise and moonset
+  // Simplified calculation
+  const moonCycle = 29.53058867;
+  const knownNew = new Date("2000-01-06T18:14:00Z");
+  const diff = (date - knownNew) / (1000 * 60 * 60 * 24);
+  const phase = ((diff % moonCycle) + moonCycle) % moonCycle;
+  // Moon transits roughly 50min later each day
+  const baseTransit = new Date(date);
+  baseTransit.setHours(12, 0, 0, 0);
+  const lunarLag = (phase / moonCycle) * 24 * 60; // minutes into day
+  const transitMin = (lunarLag + 12 * 60) % (24 * 60);
+  const transit1 = new Date(date);
+  transit1.setHours(0, Math.round(transitMin), 0, 0);
+  const transit2 = new Date(transit1.getTime() + 12 * 60 * 60 * 1000);
+
+  const fmt = (d, dur) => {
+    const start = new Date(d.getTime() - dur / 2 * 60000);
+    const end = new Date(d.getTime() + dur / 2 * 60000);
+    return `${fmtTime(start)} — ${fmtTime(end)}`;
+  };
+  // Find earliest good window during daylight
+  const sun = getSunTimes(lat, lon, date);
+  const sunrise = sun ? sun.sunrise : new Date(date.setHours(7, 0, 0, 0));
+  const sunset = sun ? sun.sunset : new Date(date.setHours(19, 30, 0, 0));
+
+  // Pick best major window (one that overlaps most with daylight)
+  let bestWindow = null;
+  [transit1, transit2].forEach(t => {
+    if (t >= sunrise && t <= sunset) {
+      if (!bestWindow) bestWindow = t;
+      else if (Math.abs(t - (sunrise.getTime() + (sunset - sunrise) / 2)) <
+               Math.abs(bestWindow - (sunrise.getTime() + (sunset - sunrise) / 2))) {
+        bestWindow = t;
+      }
+    }
+  });
+  if (!bestWindow) bestWindow = transit1;
+
+  return {
+    major: fmt(bestWindow, 120),
+    sunrise: sun ? fmtTime(sun.sunrise) : "—",
+    sunset: sun ? fmtTime(sun.sunset) : "—"
+  };
+}
+
+// ============================================================
+// NOAA TIDES API
+// ============================================================
+async function fetchTides() {
+  const today = new Date();
+  const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
+  const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${dateStr}&end_date=${dateStr}&station=${NOAA_STATION}&product=predictions&datum=MLLW&time_zone=lst_ldt&interval=hilo&units=english&application=web_services&format=json`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return data.predictions || [];
+  } catch(e) { return []; }
+}
+
+async function fetchCurrentTide() {
+  const today = new Date();
+  const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
+  const url = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?begin_date=${dateStr}&end_date=${dateStr}&station=${NOAA_STATION}&product=water_level&datum=MLLW&time_zone=lst_ldt&units=english&application=web_services&format=json`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.data && data.data.length > 0) {
+      const latest = data.data[data.data.length - 1];
+      return parseFloat(latest.v);
+    }
+  } catch(e) {}
+  return null;
+}
+
+// ============================================================
+// OPEN-METEO WEATHER (free, no API key)
+// ============================================================
+async function fetchWeather() {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=temperature_2m,windspeed_10m,winddirection_10m,precipitation_probability,weathercode&current_weather=true&wind_speed_unit=kn&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=7`;
+  try {
+    const res = await fetch(url);
+    return await res.json();
+  } catch(e) { return null; }
+}
+
+// ============================================================
+// WEATHER CODE HELPERS
+// ============================================================
+function weatherCodeToStorm(code) {
+  if (code >= 95) return { level: "HIGH", color: "text-red-400", sub: "Thunderstorms likely" };
+  if (code >= 80) return { level: "MODERATE", color: "text-amber-400", sub: "Showers possible" };
+  if (code >= 51) return { level: "LOW", color: "text-yellow-300", sub: "Light rain possible" };
+  return { level: "CLEAR", color: "text-emerald-400", sub: "No storm risk" };
+}
+
+function getMaxStormRisk(weatherData, hoursAhead) {
+  const now = new Date();
+  let maxCode = 0;
+  let maxPrecipProb = 0;
+  if (!weatherData || !weatherData.hourly) return { level: "UNKNOWN", color: "text-white/50", sub: "Data unavailable" };
+  const times = weatherData.hourly.time;
+  const codes = weatherData.hourly.weathercode;
+  const precip = weatherData.hourly.precipitation_probability;
+  for (let i = 0; i < times.length; i++) {
+    const t = new Date(times[i]);
+    const diffH = (t - now) / 3600000;
+    if (diffH >= 0 && diffH <= hoursAhead) {
+      if (codes[i] > maxCode) maxCode = codes[i];
+      if (precip[i] > maxPrecipProb) maxPrecipProb = precip[i];
+    }
+  }
+  const base = weatherCodeToStorm(maxCode);
+  if (maxPrecipProb > 60 && base.level === "CLEAR") {
+    return { level: "LOW", color: "text-yellow-300", sub: `${maxPrecipProb}% precip chance` };
+  }
+  return base;
+}
+
+// ============================================================
+// FISHING SCORE
+// ============================================================
+function calcFishingScore(windKnots, tideChanging, moonPhase, stormLevel) {
+  let score = 7; // base
+  if (windKnots < 10) score += 1;
+  else if (windKnots > 18) score -= 2;
+  else if (windKnots > 14) score -= 1;
+  if (tideChanging) score += 1;
+  if (moonPhase.fishingBonus === "high") score += 1;
+  if (stormLevel === "HIGH") score -= 3;
+  else if (stormLevel === "MODERATE") score -= 1;
+  return Math.max(1, Math.min(10, Math.round(score)));
+}
+
+function getGoStatus(score, stormLevel, windKnots) {
+  if (stormLevel === "HIGH" || windKnots > 22) {
+    return {
+      cls: "nogo-banner",
+      icon: "cancel",
+      text: "STAY HOME",
+      reason: "Dangerous conditions for a 13ft boat. Check again tomorrow."
+    };
+  }
+  if (stormLevel === "MODERATE" || windKnots > 17 || score <= 4) {
+    return {
+      cls: "caution-banner",
+      icon: "warning",
+      text: "USE CAUTION",
+      reason: "Marginal conditions. Go early, watch the horizon, stay close."
+    };
+  }
+  if (score >= 8) {
+    return {
+      cls: "go-banner",
+      icon: "check_circle",
+      text: "GO FISH",
+      reason: `Score ${score}/10 — Excellent conditions today.`
+    };
+  }
+  return {
+    cls: "go-banner",
+    icon: "check_circle",
+    text: "GO FISH",
+    reason: `Score ${score}/10 — Good day on the water.`
+  };
+}
+
+// ============================================================
+// WEEKLY OUTLOOK
+// ============================================================
+async function buildWeeklyOutlook(weatherData) {
+  const container = document.getElementById("weekly-outlook");
+  if (!weatherData || !weatherData.hourly) return;
+  const days = [];
+  const now = new Date();
+  for (let d = 0; d < 7; d++) {
+    const date = new Date(now);
+    date.setDate(now.getDate() + d);
+    const dayStr = date.toISOString().split("T")[0];
+    // Find max wind and max storm code for this day
+    let maxWind = 0, maxCode = 0;
+    weatherData.hourly.time.forEach((t, i) => {
+      if (t.startsWith(dayStr)) {
+        if (weatherData.hourly.windspeed_10m[i] > maxWind) maxWind = weatherData.hourly.windspeed_10m[i];
+        if (weatherData.hourly.weathercode[i] > maxCode) maxCode = weatherData.hourly.weathercode[i];
+      }
+    });
+    const storm = weatherCodeToStorm(maxCode);
+    const score = calcFishingScore(maxWind, true, getMoonPhase(date), storm.level);
+    days.push({ date, maxWind: maxWind.toFixed(0), score, storm, isToday: d === 0 });
+  }
+  container.innerHTML = days.map((day, i) => {
+    const dayName = i === 0 ? "TODAY" : day.date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+    const dayNum = day.date.getDate();
+    const scoreColor = day.score >= 7 ? "text-emerald-600" : day.score >= 5 ? "text-amber-600" : "text-red-600";
+    const active = day.isToday ? "border-2 border-primary shadow-md" : "border border-outline-variant/30";
+    return `
+      <div class="min-w-[90px] ${active} bg-surface-container-lowest rounded-xl p-3 text-center shrink-0">
+        <p class="font-label text-[9px] font-bold uppercase tracking-widest text-secondary mb-1">${dayName}</p>
+        <p class="font-headline text-2xl font-bold text-primary">${dayNum}</p>
+        <p class="font-headline text-lg font-bold ${scoreColor} mt-1">${day.score}</p>
+        <p class="text-[8px] text-outline font-label">/10</p>
+        <p class="text-[9px] text-outline mt-1 font-label">${day.maxWind}kt</p>
+      </div>`;
+  }).join("");
+}
+
+// ============================================================
+// WIND BARS
+// ============================================================
+function buildWindBars(weatherData) {
+  const container = document.getElementById("wind-bars");
+  if (!weatherData || !weatherData.hourly) return;
+  const now = new Date();
+  const slots = [];
+  for (let i = 0; i < 12; i++) {
+    weatherData.hourly.time.forEach((t, idx) => {
+      const tDate = new Date(t);
+      const diffH = (tDate - now) / 3600000;
+      if (diffH >= i && diffH < i + 1) {
+        slots.push(weatherData.hourly.windspeed_10m[idx]);
+      }
+    });
+    if (slots.length <= i) slots.push(0);
+  }
+  const maxWind = Math.max(...slots, 1);
+  container.innerHTML = slots.map((w, i) => {
+    const pct = Math.max(10, (w / maxWind) * 100);
+    const color = w > 20 ? "bg-red-500" : w > 15 ? "bg-amber-400" : "bg-emerald-400";
+    return `<div class="flex-1 ${color} rounded-sm opacity-80" style="height:${pct}%" title="${w.toFixed(0)}kt"></div>`;
+  }).join("");
+}
+
+// ============================================================
+// MAIN INIT
+// ============================================================
+async function init() {
+  setDate();
+
+  const today = new Date();
+  const moon = getMoonPhase(today);
+  const solunar = calcSolunarWindows(today, LAT, LON);
+
+  // Set moon info
+  document.getElementById("moon-phase-title").textContent = moon.name;
+  document.getElementById("moon-phase-body").textContent =
+    `${moon.pct}% illumination. ${moon.fishingBonus === "high" ? "Near full or new moon — significantly increases feeding activity." : "Moderate lunar influence on feeding patterns."}`;
+
+  // Set sunrise info
+  document.getElementById("why-sun-body").textContent =
+    `Sunrise at ${solunar.sunrise}. Low light gives predators cover on the flats. Fish feed aggressively in the first two hours after sunrise.`;
+
+  // Fetch weather and tides in parallel
+  const [weatherData, tides] = await Promise.all([fetchWeather(), fetchTides()]);
+
+  // --- WEATHER ---
+  if (weatherData && weatherData.current_weather) {
+    const cw = weatherData.current_weather;
+    const windKt = parseFloat(cw.windspeed.toFixed(0));
+    const windDir = degToCompass(cw.winddirection);
+    const temp = cw.temperature.toFixed(0);
+
+    document.getElementById("wind-now").textContent = `${windKt} kt ${windDir}`;
+    document.getElementById("temp-now").textContent = `${temp}°F`;
+    document.getElementById("safety-wind").textContent = `${windKt} kt`;
+    document.getElementById("safety-wind-dir").textContent = `From ${windDir}`;
+
+    const stormRisk = getMaxStormRisk(weatherData, 12);
+    document.getElementById("storm-risk-text").className = `font-headline text-xl font-bold ${stormRisk.color}`;
+    document.getElementById("storm-risk-text").textContent = stormRisk.level;
+    document.getElementById("storm-risk-sub").textContent = stormRisk.sub;
+
+    // Advisory box
+    if (stormRisk.level === "HIGH" || stormRisk.level === "MODERATE" || windKt > 17) {
+      const box = document.getElementById("advisory-box");
+      box.classList.remove("hidden");
+      box.classList.add("flex");
+      let msg = "";
+      if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT go out on a 13ft boat.";
+      else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Stay within quick return distance of the ramp.`;
+      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for a 13ft vessel. Watch for afternoon build-up.`;
+      document.getElementById("advisory-text").textContent = msg;
+    }
+
+    document.getElementById("safety-updated").textContent = "Just now";
+
+    // Build wind bars
+    buildWindBars(weatherData);
+
+    // Weekly outlook
+    await buildWeeklyOutlook(weatherData);
+
+    // Prime window
+    document.getElementById("prime-window").textContent = solunar.major;
+    document.getElementById("prime-reason").textContent = `Best solunar + tide alignment today`;
+
+    // Fishing score + Go/No-Go
+    const score = calcFishingScore(windKt, true, moon, stormRisk.level);
+    document.getElementById("fishing-score").textContent = score;
+    const goStatus = getGoStatus(score, stormRisk.level, windKt);
+    const banner = document.getElementById("go-banner");
+    banner.className = banner.className.replace(/(go-banner|caution-banner|nogo-banner)/g, goStatus.cls) + " rounded-xl p-5 shadow-xl";
+    if (!banner.className.includes(goStatus.cls)) {
+      banner.className = `${goStatus.cls} rounded-xl p-5 shadow-xl`;
+    }
+    document.getElementById("go-icon").textContent = goStatus.icon;
+    document.getElementById("go-text").textContent = goStatus.text;
+    document.getElementById("go-reason").textContent = goStatus.reason;
+
+    // Water temp if available from Marine endpoint
+    const marineUrl = `https://api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&hourly=sea_surface_temperature&timezone=America%2FNew_York&forecast_days=1`;
+    try {
+      const mRes = await fetch(marineUrl);
+      const mData = await mRes.json();
+      if (mData.hourly && mData.hourly.sea_surface_temperature) {
+        const sst = mData.hourly.sea_surface_temperature[0];
+        if (sst !== null) {
+          const sstF = celsiusToF(sst);
+          document.getElementById("why-temp-body").textContent =
+            `Water temperature ${sstF}°F — ${parseInt(sstF) >= 76 && parseInt(sstF) <= 84 ? "ideal range for tarpon and bonefish metabolism. Fish are active." : "outside peak range but fish are still feeding."}`;
+        }
+      }
+    } catch(e) {
+      document.getElementById("why-temp-body").textContent = "Typical Keys water temp this time of year keeps fish metabolically active and feeding.";
+    }
+
+  } else {
+    // Fallback
+    document.getElementById("wind-now").textContent = "—";
+    document.getElementById("temp-now").textContent = "—";
+    document.getElementById("prime-window").textContent = solunar.major;
+    document.getElementById("fishing-score").textContent = "—";
+    document.getElementById("safety-updated").textContent = "Offline";
+    document.getElementById("storm-risk-text").textContent = "UNKNOWN";
+    document.getElementById("storm-risk-sub").textContent = "Check weather app";
+  }
+
+  // --- TIDES ---
+  if (tides && tides.length > 0) {
+    const now = new Date();
+    const upcoming = tides.filter(t => new Date(t.t) > now);
+    const prev = tides.filter(t => new Date(t.t) <= now);
+    const lastTide = prev.length > 0 ? prev[prev.length - 1] : null;
+    const nextTide = upcoming.length > 0 ? upcoming[0] : null;
+
+    let tideStatus = "—";
+    if (lastTide && nextTide) {
+      const isRising = nextTide.type === "H";
+      tideStatus = isRising ? "Incoming" : "Outgoing";
+      const tideHt = parseFloat(nextTide.v).toFixed(1);
+
+      document.getElementById("tide-now").textContent = isRising ? "▲ Rising" : "▼ Falling";
+      document.getElementById("why-tide-title").textContent = isRising ? "Incoming Tide" : "Outgoing Tide";
+      document.getElementById("why-tide-body").textContent =
+        isRising
+          ? `Tide rising toward ${tideHt}ft high at ${fmtTime(nextTide.t + ":00")}. Incoming tide pushes bait onto the flats — prime feeding trigger for tarpon and bonefish.`
+          : `Tide falling from high toward ${tideHt}ft low at ${fmtTime(nextTide.t + ":00")}. Outgoing tide concentrates bait in channels and near bridge cuts.`;
+    }
+  } else {
+    document.getElementById("tide-now").textContent = "Check NOAA";
+    document.getElementById("why-tide-body").textContent = "Tide data unavailable. Check NOAA station 8724580 directly.";
+  }
+}
+
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
