@@ -92,17 +92,29 @@
 </head>
 <body class="bg-surface text-on-surface pb-24">
 
-<!-- TOP APP BAR -->
-<header class="sticky top-0 z-50 bg-[#001e40] flex justify-between items-center w-full px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
-  <div class="flex items-center gap-2">
-    <span class="material-symbols-outlined text-white text-xl">anchor</span>
-    <div>
-      <h1 class="font-headline text-white text-base font-bold leading-none tracking-tight">Big Pine Key</h1>
-      <p class="text-[10px] text-blue-200 uppercase tracking-widest font-label" id="today-date">Loading...</p>
-    </div>
+<!-- TOP APP BAR with personal photo slot -->
+<header class="sticky top-0 z-50 shadow-[0_4px_24px_rgba(0,30,64,0.4)] overflow-hidden">
+  <!-- Photo background (swap src for Erik's real photo when ready) -->
+  <div class="absolute inset-0">
+    <img
+      src="./IMG_0118.jpg"
+      alt="Erik on the Gheeno, Big Pine Key"
+      class="w-full h-full object-cover object-center"
+      id="header-photo"
+      onerror="this.style.display='none'"
+    />
+    <div class="absolute inset-0 bg-[#001e40]/80"></div>
   </div>
-  <div class="flex items-center gap-1">
-    <div class="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+  <!-- Header content -->
+  <div class="relative z-10 flex justify-between items-center w-full px-5 py-4">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-white text-xl">anchor</span>
+      <div>
+        <h1 class="font-headline text-white text-base font-bold leading-none tracking-tight">Erik's Fishing App</h1>
+        <p class="text-[10px] text-blue-200 uppercase tracking-widest font-label" id="today-date">Loading...</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-1.5 bg-white/15 rounded-full px-3 py-1.5 backdrop-blur-sm">
       <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
       <span class="text-[10px] text-white font-bold uppercase tracking-widest">Live</span>
     </div>
@@ -319,6 +331,11 @@
   </section>
 
 </main>
+
+<!-- PERSONAL FOOTER -->
+<div class="max-w-lg mx-auto px-4 pb-2 text-center">
+  <p class="text-[11px] text-outline font-label italic">Built for my Captain. Love, Johnna ⚓</p>
+</div>
 
 <!-- BOTTOM NAV -->
 <nav class="fixed bottom-0 left-0 w-full bg-[#001e40] flex justify-around items-center px-4 py-3 z-50 shadow-[0_-8px_24px_rgba(0,30,64,0.25)]" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
@@ -558,30 +575,30 @@ function getGoStatus(score, stormLevel, windKnots) {
     return {
       cls: "nogo-banner",
       icon: "cancel",
-      text: "STAY HOME",
-      reason: "Dangerous conditions for a 13ft boat. Check again tomorrow."
+      text: "STAY HOME, ERIK",
+      reason: "Not safe for the Gheeno today. Check again tomorrow."
     };
   }
   if (stormLevel === "MODERATE" || windKnots > 17 || score <= 4) {
     return {
       cls: "caution-banner",
       icon: "warning",
-      text: "USE CAUTION",
-      reason: "Marginal conditions. Go early, watch the horizon, stay close."
+      text: "ERIK, USE CAUTION",
+      reason: "Marginal for the Gheeno. Go early, watch the horizon, stay close."
     };
   }
   if (score >= 8) {
     return {
       cls: "go-banner",
       icon: "check_circle",
-      text: "GO FISH",
+      text: "ERIK, GO FISH",
       reason: `Score ${score}/10 — Excellent conditions today.`
     };
   }
   return {
     cls: "go-banner",
     icon: "check_circle",
-    text: "GO FISH",
+    text: "ERIK, GO FISH",
     reason: `Score ${score}/10 — Good day on the water.`
   };
 }
@@ -697,9 +714,9 @@ async function init() {
       box.classList.remove("hidden");
       box.classList.add("flex");
       let msg = "";
-      if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT go out on a 13ft boat.";
-      else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Stay within quick return distance of the ramp.`;
-      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for a 13ft vessel. Watch for afternoon build-up.`;
+      if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT take the Gheeno out today.";
+      else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Keep the Gheeno within quick return distance of the ramp.`;
+      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for the Gheeno. Watch for afternoon build-up.`;
       document.getElementById("advisory-text").textContent = msg;
     }
 
