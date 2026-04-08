@@ -575,6 +575,7 @@ function calcFishingScore(windKnots, tideChanging, moonPhase, stormLevel) {
   if (moonPhase.fishingBonus === "high") score += 1;
   if (stormLevel === "HIGH") score -= 3;
   else if (stormLevel === "MODERATE") score -= 1;
+  else if (stormLevel === "LOW") score -= 1;
   return Math.max(1, Math.min(10, Math.round(score)));
 }
 
@@ -753,18 +754,17 @@ async function init() {
     document.getElementById("go-text").textContent = goStatus.text;
     document.getElementById("go-reason").textContent = goStatus.reason;
 
-    // Water temp if available from Marine endpoint
-    const marineUrl = `https://api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LON}&hourly=sea_surface_temperature&timezone=America%2FNew_York&forecast_days=1`;
+    // Water temp from NOAA station 8724580 (Big Pine Key area)
+    const waterTempUrl = `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?station=8724580&product=water_temperature&date=latest&units=english&time_zone=lst_ldt&application=web_services&format=json`;
     try {
-      const mRes = await fetch(marineUrl);
+      const mRes = await fetch(waterTempUrl);
       const mData = await mRes.json();
-      if (mData.hourly && mData.hourly.sea_surface_temperature) {
-        const sst = mData.hourly.sea_surface_temperature[0];
-        if (sst !== null) {
-          const sstF = celsiusToF(sst);
-          document.getElementById("why-temp-body").textContent =
-            `Water temperature ${sstF}°F — ${parseInt(sstF) >= 76 && parseInt(sstF) <= 84 ? "ideal range for tarpon and bonefish metabolism. Fish are active." : "outside peak range but fish are still feeding."}`;
-        }
+      if (mData.data && mData.data.length > 0) {
+        const sstF = parseFloat(mData.data[0].v).toFixed(1);
+        document.getElementById("why-temp-body").textContent =
+          `Water temperature ${sstF}°F — ${parseFloat(sstF) >= 76 && parseFloat(sstF) <= 84 ? "ideal range for tarpon and bonefish metabolism. Fish are active." : "outside peak range but fish are still feeding."}`;
+      } else {
+        document.getElementById("why-temp-body").textContent = "Typical Keys water temp this time of year keeps fish metabolically active and feeding.";
       }
     } catch(e) {
       document.getElementById("why-temp-body").textContent = "Typical Keys water temp this time of year keeps fish metabolically active and feeding.";
@@ -784,8 +784,8 @@ async function init() {
   // --- TIDES ---
   if (tides && tides.length > 0) {
     const now = new Date();
-    const upcoming = tides.filter(t => new Date(t.t) > now);
-    const prev = tides.filter(t => new Date(t.t) <= now);
+    const upcoming = tides.filter(t => new Date(t.t.replace(' ', 'T')) > now);
+    const prev = tides.filter(t => new Date(t.t.replace(' ', 'T')) <= now);
     const lastTide = prev.length > 0 ? prev[prev.length - 1] : null;
     const nextTide = upcoming.length > 0 ? upcoming[0] : null;
 
