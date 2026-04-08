@@ -279,6 +279,52 @@
 
 </main>
 
+<!-- DAY DETAIL BOTTOM SHEET -->
+<div id="day-modal" class="fixed inset-0 z-[100] pointer-events-none">
+  <div id="day-modal-backdrop" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"
+       onclick="closeDayModal()"></div>
+  <div id="day-modal-sheet"
+       class="absolute bottom-0 left-0 right-0 max-w-lg mx-auto bg-background rounded-t-2xl shadow-2xl translate-y-full transition-transform duration-300"
+       style="padding-bottom: max(24px, env(safe-area-inset-bottom))">
+    <div class="flex justify-between items-center px-5 pt-5 pb-3 border-b border-outline-variant/30">
+      <div>
+        <p id="modal-day-name" class="font-headline font-bold text-primary text-xl"></p>
+        <p id="modal-date" class="text-[11px] text-outline font-label uppercase tracking-wider"></p>
+      </div>
+      <button onclick="closeDayModal()" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center">
+        <span class="material-symbols-outlined text-outline">close</span>
+      </button>
+    </div>
+    <div class="px-5 py-4 space-y-4">
+      <div id="modal-banner" class="rounded-xl p-4 flex items-center gap-4">
+        <span id="modal-icon" class="text-3xl"></span>
+        <div>
+          <p id="modal-verdict" class="font-headline font-bold text-white text-lg leading-tight"></p>
+          <p id="modal-score-text" class="text-white/80 text-sm font-body"></p>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-surface-container-low rounded-xl p-3 text-center">
+          <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Max Wind</p>
+          <p id="modal-wind" class="font-headline font-bold text-primary text-base"></p>
+        </div>
+        <div class="bg-surface-container-low rounded-xl p-3 text-center">
+          <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Storm</p>
+          <p id="modal-storm" class="font-headline font-bold text-sm"></p>
+        </div>
+        <div class="bg-surface-container-low rounded-xl p-3 text-center">
+          <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Moon</p>
+          <p id="modal-moon" class="font-headline font-bold text-primary text-xs leading-tight mt-0.5"></p>
+        </div>
+      </div>
+      <div class="bg-surface-container rounded-xl p-4">
+        <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Planning Note</p>
+        <p id="modal-note" class="text-sm text-on-surface-variant font-body leading-relaxed"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- PERSONAL FOOTER -->
 <div class="max-w-lg mx-auto px-4 pb-2 text-center">
   <p class="text-[11px] text-outline font-label italic">Built for my Captain. Love, Johnna ⚓</p>
@@ -568,7 +614,7 @@ const SPOTS = [
     id: "bogie-channel",
     name: "Bogie Channel",
     subtitle: "Tarpon & Snook Highway",
-    image: "https://images.unsplash.com/photo-1534186294672-8c0a7a4cc753?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1601158935942-52255782d322?w=800&q=80",
     lat: 24.6780, lon: -81.3340,
     distanceNote: "10 min from BPK",
     species: "Tarpon & Snook",
@@ -587,7 +633,7 @@ const SPOTS = [
     id: "niles-channel",
     name: "Niles Channel",
     subtitle: "Tarpon Migration Route",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80",
     lat: 24.6580, lon: -81.4230,
     distanceNote: "15 min toward Summerland",
     species: "Tarpon & Cobia",
@@ -606,7 +652,7 @@ const SPOTS = [
     id: "newfound-harbor",
     name: "Newfound Harbor",
     subtitle: "Snook & Permit Structure",
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80",
     lat: 24.6300, lon: -81.4200,
     distanceNote: "15 min toward Little Torch",
     species: "Snook & Permit",
@@ -644,7 +690,7 @@ const SPOTS = [
     id: "torch-ramrod-channel",
     name: "Torch Ramrod Channel",
     subtitle: "Deep Channel Big Fish",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80",
     lat: 24.6430, lon: -81.4640,
     distanceNote: "20 min toward Ramrod Key",
     species: "Tarpon & Cobia",
@@ -663,7 +709,7 @@ const SPOTS = [
     id: "pine-channel-north",
     name: "Pine Channel",
     subtitle: "Big Pine North Side",
-    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1518877593221-1f28583780b4?w=800&q=80",
     lat: 24.7060, lon: -81.3680,
     distanceNote: "5 min north of BPK",
     species: "Snook & Redfish",
@@ -906,23 +952,85 @@ async function buildWeeklyOutlook(weatherData) {
       }
     });
     const storm = weatherCodeToStorm(maxCode);
-    const score = calcFishingScore(maxWind, true, getMoonPhase(date), storm.level);
-    days.push({ date, maxWind: maxWind.toFixed(0), score, storm, isToday: d === 0 });
+    const moon = getMoonPhase(date);
+    const score = calcFishingScore(maxWind, true, moon, storm.level);
+    days.push({ date, maxWind: maxWind.toFixed(0), score, storm, moon, isToday: d === 0 });
   }
+
+  // Store for modal access
+  window._weekDays = days;
+
   container.innerHTML = days.map((day, i) => {
     const dayName = i === 0 ? "TODAY" : day.date.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
     const dayNum = day.date.getDate();
     const scoreColor = day.score >= 7 ? "text-emerald-600" : day.score >= 5 ? "text-amber-600" : "text-red-600";
     const active = day.isToday ? "border-2 border-primary shadow-md" : "border border-outline-variant/30";
     return `
-      <div class="min-w-[90px] ${active} bg-surface-container-lowest rounded-xl p-3 text-center shrink-0">
+      <div class="min-w-[90px] ${active} bg-surface-container-lowest rounded-xl p-3 text-center shrink-0 cursor-pointer active:scale-95 transition-transform select-none"
+           onclick="showDayModal(${i})">
         <p class="font-label text-[9px] font-bold uppercase tracking-widest text-secondary mb-1">${dayName}</p>
         <p class="font-headline text-2xl font-bold text-primary">${dayNum}</p>
         <p class="font-headline text-lg font-bold ${scoreColor} mt-1">${day.score}</p>
         <p class="text-[8px] text-outline font-label">/10</p>
         <p class="text-[9px] text-outline mt-1 font-label">${day.maxWind}kt</p>
+        <p class="text-[8px] text-outline/60 font-label mt-0.5">tap ↑</p>
       </div>`;
   }).join("");
+}
+
+// ============================================================
+// DAY DETAIL MODAL
+// ============================================================
+function showDayModal(dayIndex) {
+  const day = window._weekDays && window._weekDays[dayIndex];
+  if (!day) return;
+
+  const isToday = dayIndex === 0;
+  const dayName = isToday ? "Today" : day.date.toLocaleDateString("en-US", { weekday: "long" });
+  const dateStr = day.date.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+  const goStatus = getGoStatus(day.score, day.storm.level, parseFloat(day.maxWind));
+
+  // Populate
+  document.getElementById("modal-day-name").textContent = dayName;
+  document.getElementById("modal-date").textContent = dateStr;
+  document.getElementById("modal-icon").textContent = goStatus.icon;
+  document.getElementById("modal-verdict").textContent = goStatus.text;
+  document.getElementById("modal-score-text").textContent = `Score ${day.score}/10 — ${goStatus.reason}`;
+  document.getElementById("modal-wind").textContent = `${day.maxWind} kt`;
+  const stormEl = document.getElementById("modal-storm");
+  stormEl.textContent = day.storm.level;
+  stormEl.className = `font-headline font-bold text-sm ${day.storm.color}`;
+  document.getElementById("modal-moon").textContent = day.moon.name;
+
+  // Planning note
+  let note = "";
+  if (day.score >= 8) note = `${dayName} looks excellent. Wind at ${day.maxWind} kt and ${day.storm.level === "CLEAR" ? "clear skies" : day.storm.sub.toLowerCase()}. ${day.moon.fishingBonus === "high" ? "Strong lunar influence adds to feeding activity." : "Good solunar conditions."} Plan an early start.`;
+  else if (day.score >= 6) note = `Decent day. Wind at ${day.maxWind} kt — manageable for the Gheenoe. ${day.storm.level !== "CLEAR" ? day.storm.sub + ". " : ""}Work the protected channels if conditions feel marginal.`;
+  else if (day.score >= 4) note = `Marginal. Wind at ${day.maxWind} kt${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""}. Stick to sheltered spots like Spanish Harbor Bridge or Pine Channel. Go early before conditions build.`;
+  else note = `Rough day on the water. ${day.maxWind} kt winds${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""} make it not worth the run. Rest up for a better day.`;
+
+  document.getElementById("modal-note").textContent = note;
+
+  // Banner color
+  const banner = document.getElementById("modal-banner");
+  banner.className = `${goStatus.cls} rounded-xl p-4 flex items-center gap-4`;
+
+  // Animate open
+  const modal = document.getElementById("day-modal");
+  const backdrop = document.getElementById("day-modal-backdrop");
+  const sheet = document.getElementById("day-modal-sheet");
+  modal.style.pointerEvents = "auto";
+  backdrop.style.opacity = "1";
+  sheet.style.transform = "translateY(0)";
+}
+
+function closeDayModal() {
+  const modal = document.getElementById("day-modal");
+  const backdrop = document.getElementById("day-modal-backdrop");
+  const sheet = document.getElementById("day-modal-sheet");
+  backdrop.style.opacity = "0";
+  sheet.style.transform = "translateY(100%)";
+  setTimeout(() => { modal.style.pointerEvents = "none"; }, 320);
 }
 
 // ============================================================
