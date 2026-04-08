@@ -92,36 +92,44 @@
 </head>
 <body class="bg-surface text-on-surface pb-24">
 
-<!-- TOP APP BAR with personal photo slot -->
-<header class="sticky top-0 z-50 shadow-[0_4px_24px_rgba(0,30,64,0.4)] overflow-hidden">
-  <!-- Photo background (swap src for Erik's real photo when ready) -->
-  <div class="absolute inset-0">
-    <img
-      src="./IMG_0118.jpg"
-      alt="Erik on the Gheeno, Big Pine Key"
-      class="w-full h-full object-cover object-center"
-      id="header-photo"
-      onerror="this.style.display='none'"
-    />
-    <div class="absolute inset-0 bg-[#001e40]/80"></div>
+<!-- TOP APP BAR — clean, solid -->
+<header class="sticky top-0 z-50 bg-[#001e40] flex justify-between items-center w-full px-5 py-4 shadow-[0_4px_24px_rgba(0,30,64,0.3)]">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-white text-xl">anchor</span>
+    <div>
+      <h1 class="font-headline text-white text-base font-bold leading-none tracking-tight">Erik's Fishing App</h1>
+      <p class="text-[10px] text-blue-200 uppercase tracking-widest font-label" id="today-date">Loading...</p>
+    </div>
   </div>
-  <!-- Header content -->
-  <div class="relative z-10 flex justify-between items-center w-full px-5 py-4">
-    <div class="flex items-center gap-3">
-      <span class="material-symbols-outlined text-white text-xl">anchor</span>
-      <div>
-        <h1 class="font-headline text-white text-base font-bold leading-none tracking-tight">Erik's Fishing App</h1>
-        <p class="text-[10px] text-blue-200 uppercase tracking-widest font-label" id="today-date">Loading...</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-1.5 bg-white/15 rounded-full px-3 py-1.5 backdrop-blur-sm">
-      <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
-      <span class="text-[10px] text-white font-bold uppercase tracking-widest">Live</span>
-    </div>
+  <div class="flex items-center gap-1.5 bg-white/10 rounded-full px-3 py-1.5">
+    <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></div>
+    <span class="text-[10px] text-white font-bold uppercase tracking-widest">Live</span>
   </div>
 </header>
 
 <main class="max-w-lg mx-auto px-4 pt-5 space-y-5">
+
+  <!-- PERSONAL HERO PHOTO -->
+  <section class="relative rounded-xl overflow-hidden shadow-xl" style="height: 220px;">
+    <img
+      src="./IMG_0118.jpg"
+      alt="Erik on the Gheeno, Big Pine Key"
+      class="w-full h-full object-cover object-top"
+      onerror="this.parentElement.style.display='none'"
+    />
+    <!-- Gradient overlay — light at top, darker at bottom for text legibility -->
+    <div class="absolute inset-0 bg-gradient-to-t from-[#001e40]/75 via-transparent to-transparent"></div>
+    <!-- Name tag bottom left -->
+    <div class="absolute bottom-4 left-4">
+      <p class="font-label text-[10px] uppercase tracking-[0.2em] text-white/70 mb-0.5">Captain</p>
+      <h2 class="font-headline text-2xl font-bold text-white leading-none">Erik</h2>
+      <p class="font-label text-[10px] text-white/60 uppercase tracking-widest mt-0.5">Big Pine Key, FL</p>
+    </div>
+    <!-- Live badge top right -->
+    <div class="absolute top-3 right-3 glass-panel rounded-full px-3 py-1 border border-white/20">
+      <p class="font-label text-[10px] font-bold text-primary uppercase tracking-widest">The Gheeno</p>
+    </div>
+  </section>
 
   <!-- 1. GO / CAUTION / NO-GO BANNER -->
   <section id="go-banner" class="go-banner rounded-xl p-5 shadow-xl">
