@@ -221,69 +221,8 @@
   <section>
     <h3 class="font-headline text-lg font-bold text-primary mb-3 px-1">Best Spots Today</h3>
     <div class="space-y-4" id="spots-container">
-
-      <!-- Spot 1 -->
-      <div class="spot-card bg-surface-container-lowest shadow-md">
-        <div class="relative h-44 overflow-hidden rounded-t-xl">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bahia_Honda_State_Park_aerial.jpg/1280px-Bahia_Honda_State_Park_aerial.jpg"
-               alt="Bahia Honda Bridge area"
-               class="w-full h-full object-cover"
-               onerror="this.src='https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
-          <div class="absolute top-3 left-3">
-            <span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full font-label">#1 Pick</span>
-          </div>
-          <div class="absolute bottom-3 left-4 right-4">
-            <h4 class="font-headline text-xl font-bold text-white">Bahia Honda Bridge</h4>
-            <p class="text-[11px] text-white/80 uppercase tracking-widest font-label">Tarpon Alley</p>
-          </div>
-        </div>
-        <div class="p-4">
-          <div class="flex gap-3 mb-3">
-            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
-              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Target Species</p>
-              <p class="font-headline font-bold text-primary text-sm">Tarpon</p>
-            </div>
-            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
-              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Best Bait</p>
-              <p class="font-headline font-bold text-primary text-sm">Live Crab</p>
-            </div>
-          </div>
-          <p class="text-sm text-on-surface-variant font-body leading-relaxed" id="spot1-why">Incoming tide pushes bait against bridge pylons. Best window: first two hours of light.</p>
-        </div>
-      </div>
-
-      <!-- Spot 2 -->
-      <div class="spot-card bg-surface-container-lowest shadow-md">
-        <div class="relative h-44 overflow-hidden rounded-t-xl">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Florida_Keys_National_Marine_Sanctuary.jpg/1280px-Florida_Keys_National_Marine_Sanctuary.jpg"
-               alt="Content Keys flats"
-               class="w-full h-full object-cover"
-               onerror="this.src='https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80'"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
-          <div class="absolute top-3 left-3">
-            <span class="bg-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full font-label backdrop-blur-sm">#2 Pick</span>
-          </div>
-          <div class="absolute bottom-3 left-4 right-4">
-            <h4 class="font-headline text-xl font-bold text-white">Content Keys Flats</h4>
-            <p class="text-[11px] text-white/80 uppercase tracking-widest font-label">Bonefish Flats</p>
-          </div>
-        </div>
-        <div class="p-4">
-          <div class="flex gap-3 mb-3">
-            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
-              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Target Species</p>
-              <p class="font-headline font-bold text-primary text-sm">Bonefish</p>
-            </div>
-            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
-              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Best Bait</p>
-              <p class="font-headline font-bold text-primary text-sm">Live Shrimp</p>
-            </div>
-          </div>
-          <p class="text-sm text-on-surface-variant font-body leading-relaxed" id="spot2-why">Tailing fish on eastern edge as tide floods the marl flats. Low light keeps them active.</p>
-        </div>
-      </div>
-
+      <!-- Populated dynamically by renderSpots() -->
+      <div class="text-sm text-on-surface-variant font-body px-1">Loading spots...</div>
     </div>
   </section>
 
@@ -579,6 +518,322 @@ function calcFishingScore(windKnots, tideChanging, moonPhase, stormLevel) {
   return Math.max(1, Math.min(10, Math.round(score)));
 }
 
+// ============================================================
+// SPOTS DATABASE — Big Pine Key area (Gheeno range)
+// bestTide: "incoming" | "outgoing" | "either"
+// bestMonths: 1–12, peakMonths subset for +1 bonus
+// bestWindMax: max comfortable knots
+// bestTime: "early" | "late" | "any"
+// ============================================================
+const SPOTS = [
+  {
+    id: "coupon-bight",
+    name: "Coupon Bight",
+    subtitle: "Big Pine Backcountry",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    distanceNote: "5 min from BPK ramp",
+    species: "Permit & Tarpon",
+    bestTide: "incoming",
+    bestMonths: [2,3,4,5,6,7,8,9,10],
+    peakMonths: [4,5,6,7],
+    bestWindMax: 14,
+    bestTime: "early",
+    bait: { incoming: "Live crab", outgoing: "Live shrimp", either: "Mud crab" },
+    teachingTip: "The bight floods on incoming tide, pushing bait up onto the marl flats. Permit tail in as little as 6 inches of water — look for the mud puffs first.",
+    whyIncoming: "Incoming tide is flooding the bight right now. Permit and tarpon follow the bait push onto the flat. Wade the eastern edge or pole in quiet.",
+    whyOutgoing: "Outgoing tide concentrates bait in the deeper cuts at the bight entrance. Tarpon stack in the channel waiting for the funnel.",
+    whyAny: "Coupon Bight holds fish year-round. Work the channel edges and marl flat corners — permit stay close to structure even in neutral tide."
+  },
+  {
+    id: "no-name-flats",
+    name: "No Name Key Flats",
+    subtitle: "Backcountry Permit Flat",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+    distanceNote: "10 min via Bogie Channel",
+    species: "Permit & Bonefish",
+    bestTide: "incoming",
+    bestMonths: [3,4,5,6,7,8,9,10],
+    peakMonths: [4,5,6,9,10],
+    bestWindMax: 12,
+    bestTime: "early",
+    bait: { incoming: "Live crab", outgoing: "Shrimp on jig", either: "Live crab" },
+    teachingTip: "Wide, shallow flat with hard bottom. Permit and bonefish tail visibly here on incoming tide. Polarized glasses are everything — you're sight-fishing, not blind-casting.",
+    whyIncoming: "Incoming tide is flooding the flat. This is prime time — permit move onto the hard bottom chasing crabs. Go slow, stay low, spot the fish before you cast.",
+    whyOutgoing: "Fish will be retreating to the channel edges as the flat drains. Target the deeper potholes and the channel where Bogie meets the flat.",
+    whyAny: "No Name Flats rewards patience. Pole quietly and scan for tails or shadows — the fish are here but they spook easily in clear water."
+  },
+  {
+    id: "bogie-channel",
+    name: "Bogie Channel",
+    subtitle: "Tarpon & Snook Highway",
+    image: "https://images.unsplash.com/photo-1534186294672-8c0a7a4cc753?w=800&q=80",
+    distanceNote: "10 min from BPK",
+    species: "Tarpon & Snook",
+    bestTide: "either",
+    bestMonths: [3,4,5,6,7,8,9,10,11],
+    peakMonths: [4,5,6,7],
+    bestWindMax: 18,
+    bestTime: "early",
+    bait: { incoming: "Live mullet", outgoing: "Live mullet", either: "Live mullet or pilchard" },
+    teachingTip: "Bogie Channel is a major fish highway between the backcountry and open water. Tarpon roll on the surface just after first light — that surface explosion is your target.",
+    whyIncoming: "Tarpon push through Bogie on the incoming tide heading into the backcountry. Position at the channel bend and let the current work the bait.",
+    whyOutgoing: "Outgoing tide flushes bait out of the backcountry through Bogie — snook and tarpon wait at the channel mouth. Drift live bait through the middle.",
+    whyAny: "Bogie holds fish on any tide. Snook hug the mangrove edges year-round. Anchor up and work the current seams."
+  },
+  {
+    id: "niles-channel",
+    name: "Niles Channel",
+    subtitle: "Tarpon Migration Route",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    distanceNote: "15 min toward Summerland",
+    species: "Tarpon & Cobia",
+    bestTide: "outgoing",
+    bestMonths: [4,5,6,7],
+    peakMonths: [4,5,6],
+    bestWindMax: 16,
+    bestTime: "early",
+    bait: { incoming: "Live crab", outgoing: "Live crab or pilchard", either: "Live crab" },
+    teachingTip: "Niles Channel is one of the great tarpon highways in the Lower Keys. April through June, rolling fish stack here like a parade. This is where you get your 100-lb shot from a small boat.",
+    whyIncoming: "Tarpon move through Niles on both tides. Set up at a channel bend and free-line a live crab — let the current do the work.",
+    whyOutgoing: "Outgoing tide pushes bait out of the backcountry through Niles. This is prime — tarpon face into the current at the channel mouth. Dead-drift a crab through the middle.",
+    whyAny: "Niles Channel is the real deal during tarpon season. Even on a slow tide, fish are staging here April through June. Run the channel and look for rollers before you anchor."
+  },
+  {
+    id: "newfound-harbor",
+    name: "Newfound Harbor",
+    subtitle: "Snook & Permit Structure",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80",
+    distanceNote: "15 min toward Little Torch",
+    species: "Snook & Permit",
+    bestTide: "outgoing",
+    bestMonths: [1,2,3,4,5,6,7,8,9,10,11,12],
+    peakMonths: [10,11,12,1,2,3],
+    bestWindMax: 16,
+    bestTime: "any",
+    bait: { incoming: "Live shrimp", outgoing: "Pinfish or shrimp", either: "Live shrimp" },
+    teachingTip: "Newfound Harbor has mangrove points, channel edges, and hard bottom all in close proximity. Snook are here year-round. This is a great spot to learn structure fishing.",
+    whyIncoming: "Incoming tide activates the mangrove edges around Newfound Harbor. Snook push up into the shallows. Cast parallel to the roots, not into them.",
+    whyOutgoing: "Outgoing tide is your best play here. Snook stack in the channel cuts waiting for bait to flush out of the mangroves. Position on the deep side and intercept them.",
+    whyAny: "Newfound Harbor is consistent in any tide. The deeper channel holds snook even mid-day. Work the points where mangrove meets channel."
+  },
+  {
+    id: "spanish-harbor",
+    name: "Spanish Harbor Channel",
+    subtitle: "Bridge Snook & Cobia",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    distanceNote: "10 min on US-1 side",
+    species: "Snook & Cobia",
+    bestTide: "outgoing",
+    bestMonths: [1,2,3,4,5,6,7,8,9,10,11,12],
+    peakMonths: [3,4,5,6,10,11],
+    bestWindMax: 20,
+    bestTime: "any",
+    bait: { incoming: "Live shrimp or pilchard", outgoing: "Pinfish or grunt", either: "Live shrimp" },
+    teachingTip: "Bridge structure concentrates snook in the shadow lines year-round. Watch for cobia following eagle rays through the channel — when you see a ray, a cobia is likely right behind it.",
+    whyIncoming: "Snook face into the incoming current under the bridge shadow. Present bait just upcurrent and let it drift naturally into the shadow line.",
+    whyOutgoing: "Outgoing current flushes bait through the bridge pilings — this is peak snook time. Also watch for cobia pushing through the channel behind rays.",
+    whyAny: "Spanish Harbor Bridge holds snook on any tide in the shadow lines. Lighter tackle and a live shrimp is all you need. Cobia are a bonus whenever rays are moving."
+  },
+  {
+    id: "torch-ramrod-channel",
+    name: "Torch Ramrod Channel",
+    subtitle: "Deep Channel Big Fish",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
+    distanceNote: "20 min toward Ramrod Key",
+    species: "Tarpon & Cobia",
+    bestTide: "either",
+    bestMonths: [3,4,5,6,7,8,9,10],
+    peakMonths: [4,5,6,7],
+    bestWindMax: 16,
+    bestTime: "early",
+    bait: { incoming: "Live mullet or crab", outgoing: "Live mullet or pilchard", either: "Live mullet" },
+    teachingTip: "This deep channel is less fished than Niles and often holds fish when the more popular spots are pressured. Cobia follow large rays through here April through June — keep your eyes up.",
+    whyIncoming: "Tarpon and cobia move through Torch Ramrod on the incoming push. Set up on the upcurrent side of the channel bend and free-line bait.",
+    whyOutgoing: "Outgoing tide concentrates fish at the channel mouth where it meets open water. This is the best position — fish face into the current and you're presenting naturally.",
+    whyAny: "Torch Ramrod gets less pressure than the better-known channels. Fish are often less spooky. Run it looking for rollers before you commit to an anchor spot."
+  },
+  {
+    id: "pine-channel-north",
+    name: "Pine Channel",
+    subtitle: "Big Pine North Side",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    distanceNote: "5 min north of BPK",
+    species: "Snook & Redfish",
+    bestTide: "outgoing",
+    bestMonths: [1,2,3,4,5,6,7,8,9,10,11,12],
+    peakMonths: [9,10,11,12,1,2],
+    bestWindMax: 18,
+    bestTime: "early",
+    bait: { incoming: "Live shrimp", outgoing: "Pinfish or grunt", either: "Live shrimp" },
+    teachingTip: "Pine Channel on the north side of Big Pine is an underrated snook and redfish spot. Accessible in almost any conditions and close to home — great for a quick early morning run.",
+    whyIncoming: "Snook push up into the mangrove edges on incoming tide. Work parallel to the shore with live shrimp or a slow-rolled pinfish.",
+    whyOutgoing: "Outgoing tide is the move here. Snook and redfish stack in the channel cuts. Position on the deep side of the points and let bait drift through.",
+    whyAny: "Pine Channel is your closest option and consistently holds snook. A quick run on any tide — work the mangrove edges and channel bends."
+  },
+  {
+    id: "looe-key",
+    name: "Looe Key Reef",
+    subtitle: "Calm Days Only — 6 Miles Out",
+    image: "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80",
+    distanceNote: "6 miles offshore — calm days only",
+    species: "Mutton Snapper & Grouper",
+    bestTide: "either",
+    bestMonths: [4,5,6,7,8,9,10,11],
+    peakMonths: [5,6,7,8],
+    bestWindMax: 10,
+    bestTime: "any",
+    bait: { incoming: "Pilchard or squid", outgoing: "Pilchard or squid", either: "Live pilchard or cut squid" },
+    teachingTip: "Looe Key is a National Marine Sanctuary reef 6 miles south of Big Pine. On flat calm days the Gheeno can make the run. Mutton snapper, black grouper, and permit around the coral heads — this is where the biggest eatable fish live.",
+    whyIncoming: "Fish are active on the reef on any tide. Present pilchards near the reef structure — let them swim naturally toward the coral heads.",
+    whyOutgoing: "Outgoing tide brings cooler, cleaner water across the reef. Snapper and grouper feed more aggressively on moving water.",
+    whyAny: "Looe Key rewards the run. Anchor upcurrent of the reef and let bait drift back over the structure. Biggest eating fish in the area if conditions allow the trip."
+  },
+  {
+    id: "bahia-honda",
+    name: "Bahia Honda Bridge",
+    subtitle: "Tarpon Alley — Adventure Run",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    distanceNote: "25 min — plan for conditions",
+    species: "Tarpon",
+    bestTide: "incoming",
+    bestMonths: [4,5,6,7],
+    peakMonths: [5,6],
+    bestWindMax: 12,
+    bestTime: "early",
+    bait: { incoming: "Live crab", outgoing: "Live mullet", either: "Live crab" },
+    teachingTip: "Bahia Honda is one of the great tarpon spots in the Keys but it's a real run in the Gheeno — plan it for calm mornings. The old bridge creates an ambush point where massive tarpon stack on the tide. Worth the trip at least once.",
+    whyIncoming: "Incoming tide pushes bait against the Bahia Honda bridge pilings. Tarpon stack in the current seams waiting. Free-line a live crab and hold on.",
+    whyOutgoing: "Outgoing tide concentrates fish at the channel mouth below the bridge. Live mullet on a slow drift through the channel cut.",
+    whyAny: "Bahia Honda is worth the run during tarpon season. The old bridge structure holds fish all day — timing the tide just makes it more efficient."
+  }
+];
+
+// ============================================================
+// SPOT SCORING ENGINE
+// ============================================================
+function scoreSpot(spot, conditions) {
+  const { month, tideDirection, windKt, hourOfDay, sunriseHour, sunsetHour, dayOfYear } = conditions;
+  let score = 0;
+
+  // Season score (0–3)
+  if (spot.peakMonths.includes(month)) score += 3;
+  else if (spot.bestMonths.includes(month)) score += 2;
+  else score += 0;
+
+  // Tide score (0–2)
+  if (spot.bestTide === "either") score += 1;
+  else if (spot.bestTide === "incoming" && tideDirection === "incoming") score += 2;
+  else if (spot.bestTide === "outgoing" && tideDirection === "outgoing") score += 2;
+  else score += 0;
+
+  // Wind score (0–2)
+  if (windKt <= spot.bestWindMax) score += 2;
+  else if (windKt <= spot.bestWindMax + 4) score += 1;
+  else score += 0;
+
+  // Looe Key hard cutoff — offshore, exclude when windy
+  if (spot.id === "looe-key" && windKt > spot.bestWindMax) return -99;
+
+  // Time of day score (0–1)
+  if (spot.bestTime === "any") {
+    score += 0.5;
+  } else if (spot.bestTime === "early") {
+    const earlyWindow = hourOfDay >= sunriseHour && hourOfDay <= sunriseHour + 2.5;
+    if (earlyWindow) score += 1;
+  } else if (spot.bestTime === "late") {
+    const lateWindow = hourOfDay >= sunsetHour - 2.5 && hourOfDay <= sunsetHour;
+    if (lateWindow) score += 1;
+  }
+
+  // Variety tiebreaker — rotate using day of year so picks cycle
+  score += ((dayOfYear + spot.id.charCodeAt(0)) % 7) * 0.05;
+
+  return score;
+}
+
+function getBait(spot, tideDirection) {
+  if (tideDirection === "incoming" && spot.bait.incoming) return spot.bait.incoming;
+  if (tideDirection === "outgoing" && spot.bait.outgoing) return spot.bait.outgoing;
+  return spot.bait.either || spot.bait.incoming;
+}
+
+function getSpotWhyText(spot, tideDirection) {
+  if (tideDirection === "incoming") return spot.whyIncoming;
+  if (tideDirection === "outgoing") return spot.whyOutgoing;
+  return spot.whyAny;
+}
+
+function renderSpots(tideDirection, windKt) {
+  const now = new Date();
+  const month = now.getMonth() + 1; // 1–12
+  const hourOfDay = now.getHours() + now.getMinutes() / 60;
+  const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+
+  // Approximate sunrise/sunset for Big Pine Key
+  const sunriseHour = 6.5;
+  const sunsetHour = 19.5;
+
+  const conditions = { month, tideDirection, windKt, hourOfDay, sunriseHour, sunsetHour, dayOfYear };
+
+  const scored = SPOTS
+    .map(s => ({ ...s, _score: scoreSpot(s, conditions) }))
+    .filter(s => s._score > -99)
+    .sort((a, b) => b._score - a._score);
+
+  const top2 = scored.slice(0, 2);
+
+  const labels = [
+    { badge: "bg-secondary-fixed text-on-secondary-fixed", rank: "#1 Pick" },
+    { badge: "bg-white/20 text-white backdrop-blur-sm", rank: "#2 Pick" }
+  ];
+
+  const container = document.getElementById("spots-container");
+  container.innerHTML = top2.map((spot, i) => {
+    const bait = getBait(spot, tideDirection);
+    const whyText = getSpotWhyText(spot, tideDirection);
+    const lbl = labels[i];
+    return `
+      <div class="spot-card bg-surface-container-lowest shadow-md">
+        <div class="relative h-44 overflow-hidden rounded-t-xl">
+          <img src="${spot.image}" alt="${spot.name}"
+               class="w-full h-full object-cover"
+               onerror="this.src='https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent"></div>
+          <div class="absolute top-3 left-3">
+            <span class="${lbl.badge} text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full font-label">${lbl.rank}</span>
+          </div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-black/40 text-white/80 text-[9px] uppercase tracking-wider px-2 py-1 rounded-full font-label backdrop-blur-sm">${spot.distanceNote}</span>
+          </div>
+          <div class="absolute bottom-3 left-4 right-4">
+            <h4 class="font-headline text-xl font-bold text-white">${spot.name}</h4>
+            <p class="text-[11px] text-white/80 uppercase tracking-widest font-label">${spot.subtitle}</p>
+          </div>
+        </div>
+        <div class="p-4">
+          <div class="flex gap-3 mb-3">
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Target Species</p>
+              <p class="font-headline font-bold text-primary text-sm">${spot.species}</p>
+            </div>
+            <div class="flex-1 bg-surface-container-low rounded-lg p-2.5">
+              <p class="text-[9px] text-outline uppercase tracking-wider font-label mb-1">Best Bait</p>
+              <p class="font-headline font-bold text-primary text-sm">${bait}</p>
+            </div>
+          </div>
+          <p class="text-sm text-on-surface-variant font-body leading-relaxed mb-2">${whyText}</p>
+          <details class="group">
+            <summary class="text-[11px] text-primary font-bold uppercase tracking-wider cursor-pointer list-none flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm group-open:rotate-90 transition-transform">chevron_right</span>
+              Pro Tip
+            </summary>
+            <p class="text-xs text-on-surface-variant font-body leading-relaxed mt-2 pl-4 border-l-2 border-secondary-fixed">${spot.teachingTip}</p>
+          </details>
+        </div>
+      </div>`;
+  }).join("");
+}
+
 function getGoStatus(score, stormLevel, windKnots) {
   if (stormLevel === "HIGH" || windKnots > 22) {
     return {
@@ -789,10 +1044,10 @@ async function init() {
     const lastTide = prev.length > 0 ? prev[prev.length - 1] : null;
     const nextTide = upcoming.length > 0 ? upcoming[0] : null;
 
-    let tideStatus = "—";
+    let tideDirection = "either";
     if (lastTide && nextTide) {
       const isRising = nextTide.type === "H";
-      tideStatus = isRising ? "Incoming" : "Outgoing";
+      tideDirection = isRising ? "incoming" : "outgoing";
       const tideHt = parseFloat(nextTide.v).toFixed(1);
 
       document.getElementById("tide-now").textContent = isRising ? "▲ Rising" : "▼ Falling";
@@ -802,9 +1057,17 @@ async function init() {
           ? `Tide rising toward ${tideHt}ft high at ${fmtTime(nextTide.t + ":00")}. Incoming tide pushes bait onto the flats — prime feeding trigger for tarpon and bonefish.`
           : `Tide falling from high toward ${tideHt}ft low at ${fmtTime(nextTide.t + ":00")}. Outgoing tide concentrates bait in channels and near bridge cuts.`;
     }
+
+    // Render best spots using live tide direction
+    const currentWindKt = parseFloat(document.getElementById("wind-now").textContent) || 10;
+    renderSpots(tideDirection, currentWindKt);
+
   } else {
     document.getElementById("tide-now").textContent = "Check NOAA";
     document.getElementById("why-tide-body").textContent = "Tide data unavailable. Check NOAA station 8724580 directly.";
+    // Render spots with neutral tide if NOAA unavailable
+    const currentWindKt = parseFloat(document.getElementById("wind-now").textContent) || 10;
+    renderSpots("either", currentWindKt);
   }
 }
 
