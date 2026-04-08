@@ -1,7 +1,7 @@
 // Service Worker for Big Pine Key Fishing App
 // Network-first for HTML pages (always fresh), cache fallback for offline use
 
-const CACHE_NAME = 'bpk-fishing-v3';
+const CACHE_NAME = 'bpk-fishing-v4';
 const APP_SHELL = [
   '/index.html',
   '/radar.html',
@@ -50,8 +50,10 @@ self.addEventListener('fetch', event => {
   }
 
   // Network-first for HTML pages — ensures updates are always visible
+  // Must match both .html paths AND Vercel cleanUrls paths (/, /species, /tides, /radar)
+  const cleanPaths = ['/', '/species', '/tides', '/radar'];
   const isHTML = url.pathname.endsWith('.html') ||
-                 url.pathname === '/' ||
+                 cleanPaths.includes(url.pathname) ||
                  APP_SHELL.includes(url.pathname);
   if (isHTML) {
     event.respondWith(
