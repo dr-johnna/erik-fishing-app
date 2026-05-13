@@ -376,6 +376,7 @@ function degToCompass(deg) {
   return dirs[Math.round(deg / 22.5) % 16];
 }
 function celsiusToF(c) { return (c * 9/5 + 32).toFixed(0); }
+function ktToMph(kt) { return Math.round(kt * 1.151); }
 
 // ============================================================
 // DATE
@@ -972,7 +973,7 @@ async function buildWeeklyOutlook(weatherData) {
         <p class="font-headline text-2xl font-bold text-primary">${dayNum}</p>
         <p class="font-headline text-lg font-bold ${scoreColor} mt-1">${day.score}</p>
         <p class="text-[8px] text-outline font-label">/10</p>
-        <p class="text-[9px] text-outline mt-1 font-label">${day.maxWind}kt</p>
+        <p class="text-[9px] text-outline mt-1 font-label">${ktToMph(day.maxWind)}mph</p>
         <p class="text-[8px] text-outline/60 font-label mt-0.5">tap ↑</p>
       </div>`;
   }).join("");
@@ -996,7 +997,7 @@ function showDayModal(dayIndex) {
   document.getElementById("modal-icon").textContent = goStatus.icon;
   document.getElementById("modal-verdict").textContent = goStatus.text;
   document.getElementById("modal-score-text").textContent = `Score ${day.score}/10 — ${goStatus.reason}`;
-  document.getElementById("modal-wind").textContent = `${day.maxWind} kt`;
+  document.getElementById("modal-wind").textContent = `${ktToMph(day.maxWind)} mph`;
   const stormEl = document.getElementById("modal-storm");
   stormEl.textContent = day.storm.level;
   stormEl.className = `font-headline font-bold text-sm ${day.storm.color}`;
@@ -1004,10 +1005,10 @@ function showDayModal(dayIndex) {
 
   // Planning note
   let note = "";
-  if (day.score >= 8) note = `${dayName} looks excellent. Wind at ${day.maxWind} kt and ${day.storm.level === "CLEAR" ? "clear skies" : day.storm.sub.toLowerCase()}. ${day.moon.fishingBonus === "high" ? "Strong lunar influence adds to feeding activity." : "Good solunar conditions."} Plan an early start.`;
-  else if (day.score >= 6) note = `Decent day. Wind at ${day.maxWind} kt — manageable for the Gheenoe. ${day.storm.level !== "CLEAR" ? day.storm.sub + ". " : ""}Work the protected channels if conditions feel marginal.`;
-  else if (day.score >= 4) note = `Marginal. Wind at ${day.maxWind} kt${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""}. Stick to sheltered spots like Spanish Harbor Bridge or Pine Channel. Go early before conditions build.`;
-  else note = `Rough day on the water. ${day.maxWind} kt winds${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""} make it not worth the run. Rest up for a better day.`;
+  if (day.score >= 8) note = `${dayName} looks excellent. Wind at ${ktToMph(day.maxWind)} mph and ${day.storm.level === "CLEAR" ? "clear skies" : day.storm.sub.toLowerCase()}. ${day.moon.fishingBonus === "high" ? "Strong lunar influence adds to feeding activity." : "Good solunar conditions."} Plan an early start.`;
+  else if (day.score >= 6) note = `Decent day. Wind at ${ktToMph(day.maxWind)} mph — manageable for the Gheenoe. ${day.storm.level !== "CLEAR" ? day.storm.sub + ". " : ""}Work the protected channels if conditions feel marginal.`;
+  else if (day.score >= 4) note = `Marginal. Wind at ${ktToMph(day.maxWind)} mph${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""}. Stick to sheltered spots like Spanish Harbor Bridge or Pine Channel. Go early before conditions build.`;
+  else note = `Rough day on the water. ${ktToMph(day.maxWind)} mph winds${day.storm.level !== "CLEAR" ? " and " + day.storm.sub.toLowerCase() : ""} make it not worth the run. Rest up for a better day.`;
 
   document.getElementById("modal-note").textContent = note;
 
@@ -1055,7 +1056,7 @@ function buildWindBars(weatherData) {
   container.innerHTML = slots.map((w, i) => {
     const pct = Math.max(10, (w / maxWind) * 100);
     const color = w > 20 ? "bg-red-500" : w > 15 ? "bg-amber-400" : "bg-emerald-400";
-    return `<div class="flex-1 ${color} rounded-sm opacity-80" style="height:${pct}%" title="${w.toFixed(0)}kt"></div>`;
+    return `<div class="flex-1 ${color} rounded-sm opacity-80" style="height:${pct}%" title="${ktToMph(w)}mph"></div>`;
   }).join("");
 }
 
@@ -1088,9 +1089,9 @@ async function init() {
     const windDir = degToCompass(cw.winddirection);
     const temp = cw.temperature.toFixed(0);
 
-    document.getElementById("wind-now").textContent = `${windKt} kt ${windDir}`;
+    document.getElementById("wind-now").textContent = `${ktToMph(windKt)} mph ${windDir}`;
     document.getElementById("temp-now").textContent = `${temp}°F`;
-    document.getElementById("safety-wind").textContent = `${windKt} kt`;
+    document.getElementById("safety-wind").textContent = `${ktToMph(windKt)} mph`;
     document.getElementById("safety-wind-dir").textContent = `From ${windDir}`;
 
     const stormRisk = getMaxStormRisk(weatherData, 12);
@@ -1106,7 +1107,7 @@ async function init() {
       let msg = "";
       if (stormRisk.level === "HIGH") msg = "⚡ Thunderstorms forecast within 12 hours. Do NOT take the Gheenoe out today.";
       else if (stormRisk.level === "MODERATE") msg = `Showers possible within 12 hours. Keep the Gheenoe within quick return distance of the ramp.`;
-      else msg = `Winds ${windKt} kt from ${windDir}. Marginal for the Gheenoe. Watch for afternoon build-up.`;
+      else msg = `Winds ${ktToMph(windKt)} mph from ${windDir}. Marginal for the Gheenoe. Watch for afternoon build-up.`;
       document.getElementById("advisory-text").textContent = msg;
     }
 
